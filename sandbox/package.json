@@ -7,10 +7,6 @@
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
-  "dependencies": {
-    "fabric": "file:../node_modules/fabric",
-    "@fabric/eraser2d": "file:../dist/fabric"
-  },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.7.0",
     "open-cli": "^7.0.1",
@@ -23,5 +19,9 @@
     "erasing",
     "erase2d",
     "fabric"
-  ]
+  ],
+  "dependencies": {
+    "@fabric/erase2d": "file:..",
+    "fabric": "file:../node_modules/fabric"
+  }
 }

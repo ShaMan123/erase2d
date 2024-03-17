@@ -11,3 +11,4 @@ e2e/
 .DS_Store
 sandbox/
 .devcontainer/
+src/

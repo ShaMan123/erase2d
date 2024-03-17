@@ -1,4 +1,4 @@
-import { EraserBrush } from '@fabric/eraser2d';
+import { EraserBrush } from '@fabric/erase2d';
 import * as fabric from 'fabric';
 import './styles.css';
 

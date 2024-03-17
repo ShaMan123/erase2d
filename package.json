@@ -1,11 +1,18 @@
 {
   "name": "erase2d",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Canvas 2d Eraser",
+  "author": "ShaMan123",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShaMan123/erase2d"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
+    "build": "rm -rf ./dist && rollup -c",
+    "prepublish": "npm run build",
     "postinstall": "npm run build && cd sandbox && npm i",
     "start": "cd sandbox && npm start"
   },
@@ -17,8 +24,6 @@
     "canvas",
     "fabric"
   ],
-  "author": "ShaMan123",
-  "license": "MIT",
   "peerDependencies": {
     "fabric": "6.0.0-beta18"
   },
@@ -36,12 +41,12 @@
     "rollup": "^4.13.0",
     "tslib": "^2.6.2"
   },
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/fabric/index.mjs",
+  "types": "./dist/fabric/index.d.ts",
   "typesVersions": {
     ">=4.2": {
       "*": [
-        "dist/index.d.ts"
+        "dist/fabric/index.mjs"
       ],
       "fabric": [
         "dist/fabric/index.mjs"
