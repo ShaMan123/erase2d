@@ -4,17 +4,22 @@ import { erase } from '../../core/erase';
 import { ClippingGroup } from './ClippingGroup';
 import { draw } from './ErasingEffect';
 
-export type ErasingEndEventDetail = {
-  path: fabric.Path;
-  targets: fabric.FabricObject[];
+export type EventDetailMap = {
+  start: fabric.TEvent<fabric.TPointerEvent>;
+  move: fabric.TEvent<fabric.TPointerEvent>;
+  end: {
+    path: fabric.Path;
+    targets: fabric.FabricObject[];
+  };
+  redraw: { type: 'start' | 'render' };
+  cancel: never;
 };
 
-export type ErasingEndEvent = CustomEvent<ErasingEndEventDetail>;
+export type ErasingEventType = keyof EventDetailMap;
 
-type EventDetailMap = {
-  start: VoidFunction;
-  end: ErasingEndEventDetail;
-};
+export type ErasingEvent<T extends ErasingEventType> = CustomEvent<
+  EventDetailMap[T]
+>;
 
 function walk(objects: FabricObject[], path: Path): FabricObject[] {
   return objects.flatMap((object) => {
@@ -142,16 +147,26 @@ const setCanvasDimensions = (
  * const eraser = new EraserBrush(canvas);
  * canvas.freeDrawingBrush = eraser;
  * canvas.isDrawingMode = true;
- * eraser.on('start', () => {
+ * eraser.on('start', (e) => {
  *    console.log('started erasing');
+ *    // prevent erasing
+ *    e.preventDefault();
  * });
  * eraser.on('end', (e) => {
- *    const erasedTargets = e.detail.targets;
+ *    const { targets: erasedTargets, path } = e.detail;
  *    e.preventDefault(); // prevent erasing being committed to the tree
- *    eraser.commit(e.detail); // commit manually since default was prevented
+ *    eraser.commit({ targets: erasedTargets, path }); // commit manually since default was prevented
  * });
  *
- * In case of performance issues trace {@link drawEffect} calls.
+ * In case of performance issues trace {@link drawEffect} calls and consider preventing it from executing
+ * @example
+ * const eraser = new EraserBrush(canvas);
+ * eraser.on('redraw', (e) => {
+ *    // prevent effect redraw on pointer down (e.g. useful if canvas didn't change)
+ *    e.detail.type === 'start' && e.preventDefault());
+ *    // prevent effect redraw after canvas has rendered (effect will become stale)
+ *    e.detail.type === 'render' && e.preventDefault());
+ * });
  */
 export class EraserBrush extends fabric.PencilBrush {
   /**
@@ -159,10 +174,11 @@ export class EraserBrush extends fabric.PencilBrush {
    */
   inverted = false;
 
-  private effectContext: CanvasRenderingContext2D;
-  private _disposer?: VoidFunction;
+  effectContext: CanvasRenderingContext2D;
 
   private eventEmitter: EventTarget;
+  private active = false;
+  private _disposer?: VoidFunction;
 
   constructor(canvas: fabric.Canvas) {
     super(canvas);
@@ -179,9 +195,9 @@ export class EraserBrush extends fabric.PencilBrush {
   /**
    * @returns disposer make sure to call it to avoid memory leaks
    */
-  on<T extends keyof EventDetailMap>(
+  on<T extends ErasingEventType>(
     type: T,
-    cb: (evt: CustomEvent<EventDetailMap[T]>) => any,
+    cb: (evt: ErasingEvent<T>) => any,
     options?: boolean | AddEventListenerOptions
   ) {
     this.eventEmitter.addEventListener(type, cb as EventListener, options);
@@ -209,36 +225,6 @@ export class EraserBrush extends fabric.PencilBrush {
   }
 
   /**
-   * @override {@link drawEffect}
-   */
-  onMouseDown(
-    pointer: fabric.Point,
-    context: fabric.TEvent<fabric.TPointerEvent>
-  ): void {
-    this.drawEffect();
-    // consider a different approach
-    this._disposer = this.canvas.on('after:render', ({ ctx }) => {
-      if (ctx !== this.canvas.getContext()) {
-        return;
-      }
-      this.drawEffect();
-      this._render();
-    });
-    this.eventEmitter.dispatchEvent(new CustomEvent('start'));
-    super.onMouseDown(pointer, context);
-  }
-
-  /**
-   * @override dispose of {@link drawEffect} listener
-   */
-  onMouseUp(context: fabric.TEvent<fabric.TPointerEvent>): boolean {
-    super.onMouseUp(context);
-    this._disposer?.();
-    delete this._disposer;
-    return false;
-  }
-
-  /**
    * @override strictly speaking the eraser needs a full render only if it has opacity set.
    * However since {@link PencilBrush} is designed for subclassing that is what we have to work with.
    */
@@ -252,6 +238,81 @@ export class EraserBrush extends fabric.PencilBrush {
   _render(ctx: CanvasRenderingContext2D = this.canvas.getTopContext()): void {
     super._render(ctx);
     erase(this.canvas.getContext(), ctx, this.effectContext);
+  }
+
+  /**
+   * @override {@link drawEffect}
+   */
+  onMouseDown(
+    pointer: fabric.Point,
+    context: fabric.TEvent<fabric.TPointerEvent>
+  ): void {
+    if (
+      !this.eventEmitter.dispatchEvent(
+        new CustomEvent('start', { detail: context, cancelable: true })
+      )
+    ) {
+      return;
+    }
+
+    this.active = true;
+
+    this.eventEmitter.dispatchEvent(
+      new CustomEvent('redraw', {
+        detail: { type: 'start' },
+        cancelable: true,
+      })
+    ) && this.drawEffect();
+
+    // consider a different approach
+    this._disposer = this.canvas.on('after:render', ({ ctx }) => {
+      if (ctx !== this.canvas.getContext()) {
+        return;
+      }
+      this.eventEmitter.dispatchEvent(
+        new CustomEvent('redraw', {
+          detail: { type: 'render' },
+          cancelable: true,
+        })
+      ) && this.drawEffect();
+      this._render();
+    });
+
+    super.onMouseDown(pointer, context);
+  }
+
+  /**
+   * @override run if active
+   */
+  onMouseMove(
+    pointer: fabric.Point,
+    context: fabric.TEvent<fabric.TPointerEvent>
+  ): void {
+    this.active &&
+      this.eventEmitter.dispatchEvent(
+        new CustomEvent('move', { detail: context, cancelable: true })
+      ) &&
+      super.onMouseMove(pointer, context);
+  }
+
+  /**
+   * @override run if active, dispose of {@link drawEffect} listener
+   */
+  onMouseUp(context: fabric.TEvent<fabric.TPointerEvent>): boolean {
+    this.active && super.onMouseUp(context);
+    this.active = false;
+    this._disposer?.();
+    delete this._disposer;
+    return false;
+  }
+
+  /**
+   * @override {@link fabric.PencilBrush} logic
+   */
+  convertPointsToSVGPath(points: fabric.Point[]): fabric.util.TSimplePathData {
+    return super.convertPointsToSVGPath(
+      this.decimate ? this.decimatePoints(points, this.decimate) : points
+    );
   }
 
   /**
@@ -274,7 +335,7 @@ export class EraserBrush extends fabric.PencilBrush {
     return path;
   }
 
-  async commit({ path, targets }: ErasingEndEventDetail) {
+  async commit({ path, targets }: EventDetailMap['end']) {
     new Map(
       await Promise.all([
         ...targets.map(async (object) => {
@@ -308,34 +369,44 @@ export class EraserBrush extends fabric.PencilBrush {
   }
 
   /**
-   * @override fire `erasing:end`
+   * @override handle events
    */
   _finalizeAndAddPath(): void {
     const points = this['_points'];
 
     if (points.length < 2) {
+      this.eventEmitter.dispatchEvent(
+        new CustomEvent('cancel', {
+          cancelable: false,
+        })
+      );
       return;
     }
 
-    const path = this.createPath(
-      this.convertPointsToSVGPath(
-        this.decimate ? this.decimatePoints(points, this.decimate) : points
-      )
-    );
+    const path = this.createPath(this.convertPointsToSVGPath(points));
     const targets = walk(this.canvas.getObjects(), path);
 
-    const ev = new CustomEvent('end', {
-      detail: {
-        path,
-        targets,
-      },
-      cancelable: true,
-    });
-    this.eventEmitter.dispatchEvent(ev) && this.commit({ path, targets });
+    this.eventEmitter.dispatchEvent(
+      new CustomEvent('end', {
+        detail: {
+          path,
+          targets,
+        },
+        cancelable: true,
+      })
+    ) && this.commit({ path, targets });
 
     this.canvas.clearContext(this.canvas.contextTop);
     this.canvas.requestRenderAll();
 
     this._resetShadow();
+  }
+
+  dispose() {
+    const { canvas } = this.effectContext;
+    // prompt GC
+    canvas.width = canvas.height = 0;
+    // release ref?
+    // delete this.effectContext
   }
 }
