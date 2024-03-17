@@ -1,0 +1,36 @@
+{
+  "name": "eraser2d",
+  "version": "1.0.0",
+  "description": "Canvas 2d Eraser",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "eraser",
+    "erasing",
+    "canvas",
+    "fabric"
+  ],
+  "author": "ShaMan123",
+  "license": "MIT",
+  "peerDependencies": {
+    "fabric": "^6.0.0-beta19"
+  },
+  "peerDependenciesMeta": {
+    "fabric": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-typescript": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.13.0",
+    "tslib": "^2.6.2"
+  }
+}
