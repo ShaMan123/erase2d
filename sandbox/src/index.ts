@@ -1,4 +1,6 @@
-import { EraserBrush } from '@fabric/erase2d';
+/// <reference path="../node_modules/erase2d/types/fabric.d.ts" />
+
+import { EraserBrush } from 'erase2d';
 import * as fabric from 'fabric';
 import './styles.css';
 

@@ -21,7 +21,7 @@
     "fabric"
   ],
   "dependencies": {
-    "@fabric/erase2d": "file:..",
+    "erase2d": "file:..",
     "fabric": "file:../node_modules/fabric"
   }
 }

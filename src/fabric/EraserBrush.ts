@@ -130,7 +130,7 @@ const setCanvasDimensions = (
  *    eraser.commit(e.detail); // commit manually since default was prevented
  * });
  *
- * In case of performance issue trace {@link drawEffect} calls.
+ * In case of performance issues trace {@link drawEffect} calls.
  */
 export class EraserBrush extends fabric.PencilBrush {
   /**
