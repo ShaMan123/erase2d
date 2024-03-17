@@ -19,7 +19,7 @@
     "build": "rollup -c",
     "prepublish": "npm run build",
     "prestart": "npm run build",
-    "start": "npm run dev -w=@erase2d/sandbox"
+    "start": "npm run dev -w @erase2d/sandbox"
   },
   "keywords": [
     "erase",

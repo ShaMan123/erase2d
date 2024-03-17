@@ -24,6 +24,6 @@ npm init -w ./packages/a
 ## Publish
 
 ```bash
-npm -w=@erase2d/fabric version <type>
-npm -w=@erase2d/fabric publish
+npm -w @erase2d/fabric version <type>
+npm -w @erase2d/fabric publish
 ```

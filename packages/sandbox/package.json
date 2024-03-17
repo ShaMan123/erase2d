@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "parcel index.html --no-cache --watch-dir ../",
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "prepublish": "rm -rf ./dist && npm run build -- --no-cache"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.7.0",
@@ -19,8 +20,7 @@
     "erase2d",
     "fabric"
   ],
-  "main": "index.js",
-  "author": "",
+  "author": "ShaMan123",
   "license": "MIT",
   "dependencies": {
     "@erase2d/fabric": "file:../fabric",
