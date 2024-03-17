@@ -1,14 +1,17 @@
 {
-  "name": "eraser2d",
+  "name": "erase2d",
   "version": "1.0.0",
   "description": "Canvas 2d Eraser",
-  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "postinstall": "npm run build && cd sandbox && npm i",
+    "start": "cd sandbox && npm start"
   },
   "keywords": [
+    "erase",
+    "erase2d",
     "eraser",
     "erasing",
     "canvas",
@@ -17,7 +20,7 @@
   "author": "ShaMan123",
   "license": "MIT",
   "peerDependencies": {
-    "fabric": "^6.0.0-beta19"
+    "fabric": "6.0.0-beta18"
   },
   "peerDependenciesMeta": {
     "fabric": {
@@ -32,5 +35,26 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "rollup": "^4.13.0",
     "tslib": "^2.6.2"
+  },
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    ">=4.2": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "fabric": [
+        "dist/fabric/index.mjs"
+      ]
+    }
+  },
+  "exports": {
+    "./fabric": {
+      "import": "./dist/fabric/index.mjs",
+      "require": null,
+      "default": null,
+      "node": null,
+      "types": "./dist/fabric/index.d.ts"
+    }
   }
 }

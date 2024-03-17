@@ -9,5 +9,5 @@ test/
 test*
 e2e/
 .DS_Store
-.codesandbox/
+sandbox/
 .devcontainer/
