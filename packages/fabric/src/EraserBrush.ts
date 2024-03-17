@@ -30,13 +30,15 @@ function walk(objects: FabricObject[], path: Path): FabricObject[] {
 
 const assertClippingGroup = (object: fabric.FabricObject) => {
   const curr = object.clipPath;
-  const next =
-    curr instanceof ClippingGroup
-      ? curr
-      : new ClippingGroup([], {
-          width: object.width,
-          height: object.height,
-        });
+
+  if (curr instanceof ClippingGroup) {
+    return curr;
+  }
+
+  const next = new ClippingGroup([], {
+    width: object.width,
+    height: object.height,
+  });
 
   if (curr) {
     const { x, y } = curr.translateToOriginPoint(
