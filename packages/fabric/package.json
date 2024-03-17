@@ -40,6 +40,5 @@
       "require": null,
       "default": "./dist/fabric/index.js"
     }
-  },
-  "main": "index.js"
+  }
 }
