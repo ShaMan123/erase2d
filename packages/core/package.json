@@ -1,0 +1,21 @@
+{
+  "name": "@erase2d/core",
+  "version": "1.0.0",
+  "description": "erase2d core",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShaMan123/erase2d.git"
+  },
+  "author": "ShaMan123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShaMan123/erase2d/issues"
+  },
+  "homepage": "https://github.com/ShaMan123/erase2d#readme",
+  "devDependencies": {}
+}

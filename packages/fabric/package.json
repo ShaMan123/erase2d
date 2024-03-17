@@ -1,0 +1,45 @@
+{
+  "name": "@erase2d/fabric",
+  "version": "1.0.0",
+  "description": "Fabric.js erase2d bindings",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShaMan123/erase2d.git"
+  },
+  "author": "ShaMan123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShaMan123/erase2d/issues"
+  },
+  "homepage": "https://github.com/ShaMan123/erase2d#readme",
+  "keywords": [
+    "erase",
+    "erase2d",
+    "eraser",
+    "erasing",
+    "canvas",
+    "fabric"
+  ],
+  "peerDependencies": {
+    "fabric": "^6.0.0-beta19"
+  },
+  "peerDependenciesMeta": {
+    "fabric": {
+      "optional": false
+    }
+  },
+  "module": "./dist/fabric/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/fabric/index.d.ts",
+      "import": "./dist/fabric/index.js",
+      "require": null,
+      "default": "./dist/fabric/index.js"
+    }
+  },
+  "main": "index.js"
+}

@@ -1,8 +1,8 @@
 import * as fabric from 'fabric';
 import { FabricObject, Group, Path } from 'fabric';
+import { erase } from '../../core/erase';
 import { ClippingGroup } from './ClippingGroup';
 import { draw } from './ErasingEffect';
-import { erase } from '../erase';
 
 export type ErasingEndEventDetail = {
   path: fabric.Path;

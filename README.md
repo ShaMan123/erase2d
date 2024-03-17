@@ -1,48 +1,26 @@
 # Erase2d
 
 A simple erasing tool.
-Currently supports fabric out of the box.
-
-## Quick Start
-
-```bash
-npm i erase2d
-```
-
-```typescript
-import { EraserBrush } from 'erase2d';
-
-const eraser = new EraserBrush(canvas);
-eraser.width = 30;
-canvas.freeDrawingBrush = eraser;
-canvas.isDrawingMode = true;
-
-// prevent from committing erasing to the tree
-eraser.on('end', (e) => e.preventDefault())
-```
-
-## Migrating from fabric@5
-
-The logic has been reworked from the bottom.
-`Eraser` has been removed in favor of the leaner `ClippingGroup`.
-Replacing the `type` in your data should be enough.
-
-https://github.com/ShaMan123/erase2d/blob/4c9657f8e2d6c20e7274f49a8f8e6d907f9e02e6/src/fabric/ClippingGroup.ts#L11
-
-```diff
-- type: 'eraser'
-+ type: 'clipping'
-```
+Currently supports [fabric](./packages/fabric/README.md) out of the box.
+The plan is to expose more bindings.
 
 ## Dev
+
+Start the [sandbox app](./packages/sandbox/README.md)
 
 ```bash
 npm start
 ```
 
+[Add workspace](https://docs.npmjs.com/cli/v10/using-npm/workspaces)
+
+```bash
+npm init -w ./packages/a
+```
+
 ## Publish
 
 ```bash
-npm version <type>
-npm publish
+npm -w=@erase2d/fabric version <type>
+npm -w=@erase2d/fabric publish
 ```
