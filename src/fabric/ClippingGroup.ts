@@ -5,6 +5,7 @@ import {
   Path,
   FabricObject,
   GroupProps,
+  classRegistry,
 } from 'fabric';
 
 export class ClippingGroup extends Group {
@@ -54,3 +55,5 @@ export class ClippingGroup extends Group {
     });
   }
 }
+
+classRegistry.setClass(ClippingGroup);
