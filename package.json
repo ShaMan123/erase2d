@@ -1,6 +1,6 @@
 {
   "name": "erase2d",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Canvas 2d Eraser",
   "author": "ShaMan123",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf ./dist && rollup -c",
     "prepublish": "npm run build",
-    "postinstall": "npm run build && cd sandbox && npm i",
+    "prestart": "npm run build && cd sandbox && npm i",
     "start": "cd sandbox && npm start"
   },
   "keywords": [
