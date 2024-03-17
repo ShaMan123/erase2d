@@ -41,25 +41,6 @@
     "rollup": "^4.13.0",
     "tslib": "^2.6.2"
   },
-  "module": "./dist/fabric/index.mjs",
-  "types": "./dist/fabric/index.d.ts",
-  "typesVersions": {
-    ">=4.2": {
-      "*": [
-        "dist/fabric/index.mjs"
-      ],
-      "fabric": [
-        "dist/fabric/index.mjs"
-      ]
-    }
-  },
-  "exports": {
-    "./fabric": {
-      "import": "./dist/fabric/index.mjs",
-      "require": null,
-      "default": null,
-      "node": null,
-      "types": "./dist/fabric/index.d.ts"
-    }
-  }
+  "module": "./dist/fabric/index.js",
+  "types": "./dist/fabric/index.d.ts"
 }

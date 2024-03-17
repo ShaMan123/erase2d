@@ -13,7 +13,7 @@ export default [
       dir: './dist',
       format: 'es',
       preserveModules: true,
-      entryFileNames: '[name].mjs',
+      entryFileNames: '[name].js',
       sourcemap: true,
       plugins: [terser()],
     },
