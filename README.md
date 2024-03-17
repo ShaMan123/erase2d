@@ -1,8 +1,11 @@
 # Erase2d
 
 A simple erasing tool.
+
 Currently supports [fabric](./packages/fabric/README.md) out of the box.
+
 The plan is to expose more bindings.
+Contributions are welcome, ping me in a feature request.
 
 ## Dev
 
