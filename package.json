@@ -3,35 +3,31 @@
   "version": "1.0.4",
   "description": "Canvas 2d Eraser",
   "author": "ShaMan123",
+  "type": "module",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShaMan123/erase2d"
+    "url": "git+https://github.com/ShaMan123/erase2d.git"
   },
-  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ShaMan123/erase2d/issues"
+  },
+  "homepage": "https://github.com/ShaMan123/erase2d#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist && rollup -c",
+    "build": "rollup -c",
     "prepublish": "npm run build",
     "prestart": "npm run build",
-    "start": "cd sandbox && npm dev"
+    "start": "npm run dev -w=@erase2d/sandbox"
   },
   "keywords": [
     "erase",
     "erase2d",
     "eraser",
     "erasing",
-    "canvas",
-    "fabric"
+    "canvas"
   ],
-  "peerDependencies": {
-    "fabric": "6.0.0-beta18"
-  },
-  "peerDependenciesMeta": {
-    "fabric": {
-      "optional": false
-    }
-  },
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
@@ -39,8 +35,12 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "rollup": "^4.13.0",
+    "rollup-plugin-delete": "^2.0.0",
     "tslib": "^2.6.2"
   },
-  "module": "./dist/fabric/index.js",
-  "types": "./dist/fabric/index.d.ts"
+  "workspaces": [
+    "packages/core",
+    "packages/fabric",
+    "packages/sandbox"
+  ]
 }

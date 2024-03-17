@@ -1,10 +1,12 @@
-/// <reference path="../node_modules/erase2d/types/fabric.d.ts" />
-
-import { EraserBrush } from 'erase2d';
+import { EraserBrush } from '@erase2d/fabric';
 import * as fabric from 'fabric';
 import './styles.css';
 
-const el = document.getElementById('canvas');
+declare global {
+  var canvas: fabric.Canvas;
+}
+
+const el = document.getElementById('canvas') as HTMLCanvasElement;
 const canvas = (window.canvas = new fabric.Canvas(el));
 
 canvas.setDimensions({

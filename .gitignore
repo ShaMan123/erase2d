@@ -2,7 +2,7 @@
 *.iml
 change-output.md
 /.nyc_output/
-/node_modules/
+**/node_modules/
 /npm-debug.log
 before_commit
 /coverage/
@@ -11,4 +11,5 @@ before_commit
 e2e/test-report/
 e2e/test-results/
 **/.cache/
+.parcel-cache/
 docs/

@@ -1,7 +1,7 @@
 {
-  "name": "fabric-vanillajs-sandbox",
+  "name": "@erase2d/sandbox",
   "version": "1.0.0",
-  "description": "fabric on Vanilla.js",
+  "description": "erase 2d on Vanilla.js",
   "scripts": {
     "dev": "parcel index.html --no-cache --watch-dir ../",
     "start": "parcel index.html",
@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.7.0",
-    "open-cli": "^7.0.1",
     "parcel": "^2.9.3",
     "typescript": "^5.0.2"
   },
@@ -20,8 +19,11 @@
     "erase2d",
     "fabric"
   ],
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "erase2d": "file:..",
-    "fabric": "file:../node_modules/fabric"
+    "@erase2d/fabric": "file:../fabric",
+    "fabric": "^6.0.0-beta19"
   }
 }
