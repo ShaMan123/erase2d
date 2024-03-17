@@ -13,8 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf ./dist && rollup -c",
     "prepublish": "npm run build",
-    "prestart": "npm run build && cd sandbox && npm i",
-    "start": "cd sandbox && npm start"
+    "prestart": "npm run build",
+    "start": "cd sandbox && npm dev"
   },
   "keywords": [
     "erase",

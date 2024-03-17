@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "fabric on Vanilla.js",
   "scripts": {
-    "dev": "parcel index.html",
+    "dev": "parcel index.html --no-cache --watch-dir ../",
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
