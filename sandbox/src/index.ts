@@ -20,7 +20,7 @@ let state = 0;
 const states = [
   { name: 'erasing', active: true, inverted: false },
   { name: 'undoing erasing', active: true, inverted: true },
-  { name: 'default', active: true, inverted: false },
+  { name: 'default', active: false, inverted: false },
 ];
 const button = new fabric.FabricText('', { backgroundColor: 'magenta' });
 const setState = (_state: number) => {
@@ -37,7 +37,13 @@ button.on('mouseup', ({ isClick }) => {
 });
 
 canvas.add(
-  new fabric.Rect({ width: 500, height: 200, fill: 'blue', erasable: true }),
+  new fabric.Rect({
+    width: 500,
+    height: 200,
+    fill: 'blue',
+    erasable: true,
+    clipPath: new fabric.Circle({ radius: 50, inverted: true }),
+  }),
   new fabric.Circle({ radius: 50, erasable: true }),
   button
 );

@@ -28,14 +28,33 @@ function walk(objects: FabricObject[], path: Path): FabricObject[] {
   });
 }
 
-const assertClippingGroup = (object: fabric.FabricObject) =>
-  (object.clipPath =
-    object.clipPath instanceof ClippingGroup
-      ? object.clipPath
+const assertClippingGroup = (object: fabric.FabricObject) => {
+  const curr = object.clipPath;
+  const next =
+    curr instanceof ClippingGroup
+      ? curr
       : new ClippingGroup([], {
           width: object.width,
           height: object.height,
-        }));
+        });
+
+  if (curr) {
+    const { x, y } = curr.translateToOriginPoint(
+      new fabric.Point(),
+      curr.originX,
+      curr.originY
+    );
+    curr.originX = curr.originY = 'center';
+    fabric.util.sendObjectToPlane(
+      curr,
+      undefined,
+      fabric.util.createTranslateMatrix(x, y)
+    );
+    next.add(curr as FabricObject);
+  }
+
+  return (object.clipPath = next);
+};
 
 export function commitErasing(
   object: fabric.FabricObject,
