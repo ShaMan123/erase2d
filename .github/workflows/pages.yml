@@ -47,8 +47,9 @@ jobs:
 
       - name: Build
         run: |
-          npm uninstall @erase2d/fabric@latest -w @erase2d/app
-          npm install @erase2d/fabric@latest -w @erase2d/app
+          npm ci --workspaces --include-workspace-root
+          # order matters!
+          npm run build -w @erase2d/fabric
           npm run build -w @erase2d/app
 
       - name: Upload artifact
