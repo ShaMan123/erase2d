@@ -1,5 +1,0 @@
-# Reproducing
-
-## Steps
-
-1.

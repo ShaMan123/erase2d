@@ -40,7 +40,6 @@
   "workspaces": [
     "packages/app",
     "packages/core",
-    "packages/fabric",
-    "packages/sandbox"
+    "packages/fabric"
   ]
 }
