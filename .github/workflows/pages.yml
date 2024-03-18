@@ -50,7 +50,7 @@ jobs:
           npm i @rollup/rollup-linux-x64-gnu --save
           npm ci --workspaces --include-workspace-root
           # order matters!
-          npm run build -w @erase2d/fabric
+          npm run build
           npm run build -w @erase2d/app
 
       - name: Upload artifact
