@@ -1,11 +1,12 @@
 import { EraserBrush } from '@erase2d/fabric';
 import * as fabric from 'fabric';
 import { NextPage } from 'next';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Canvas } from '../src/Canvas';
 import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
+import { Tool } from '../src/tool';
 
-const IndexPage: NextPage = () => {
+const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
   const ref = useRef<fabric.Canvas>(null);
   const isTransparent = useIsTransparentWorker();
 
@@ -32,28 +33,6 @@ const IndexPage: NextPage = () => {
         );
       });
 
-      canvas.isDrawingMode = true;
-
-      let state = 0;
-      const states = [
-        { name: 'erasing', active: true, inverted: false },
-        { name: 'undoing erasing', active: true, inverted: true },
-        { name: 'default', active: false, inverted: false },
-      ];
-      const button = new fabric.FabricText('', { backgroundColor: 'magenta' });
-      const setState = (_state: number) => {
-        state = _state;
-        const { name, active, inverted } = states[state];
-        button.set('text', `${name}`);
-        canvas.isDrawingMode = active;
-        eraser.inverted = inverted;
-        canvas.requestRenderAll();
-      };
-      setState(0);
-      button.on('mouseup', ({ isClick }) => {
-        isClick && setState((state + 1) % 3);
-      });
-
       canvas.add(
         new fabric.Rect({
           width: 500,
@@ -62,8 +41,7 @@ const IndexPage: NextPage = () => {
           erasable: true,
           clipPath: new fabric.Circle({ radius: 50, inverted: true }),
         }),
-        new fabric.Circle({ radius: 50, erasable: true }),
-        button
+        new fabric.Circle({ radius: 50, erasable: true })
       );
 
       const animate = (toState: number) => {
@@ -84,8 +62,17 @@ const IndexPage: NextPage = () => {
     [ref, isTransparent]
   );
 
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) {
+      return;
+    }
+    (canvas.freeDrawingBrush as EraserBrush).inverted = tool === 'undo';
+    canvas.isDrawingMode = tool !== 'default';
+  }, [ref, tool]);
+
   return (
-    <div className="position-relative">
+    <div>
       <Canvas ref={ref} onLoad={onLoad} />
     </div>
   );

@@ -1,9 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { type AppProps } from 'next/app';
 import Head from 'next/head';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import {
+  ButtonGroup,
+  Container,
+  Nav,
+  Navbar,
+  ToggleButton,
+} from 'react-bootstrap';
 import '../index.css';
+import { useState } from 'react';
+import { Tool } from '../src/tool';
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
+  const [tool, setTool] = useState<Tool>('erase');
   return (
     <>
       <Head>
@@ -15,6 +25,22 @@ export default function MyApp({ Component, pageProps }) {
           <Navbar.Brand>
             <strong>Erase2d</strong> App
           </Navbar.Brand>
+          <ButtonGroup>
+            {(['default', 'erase', 'undo'] as const).map((toolType) => (
+              <ToggleButton
+                key={toolType}
+                id={`radio-${toolType}`}
+                type="radio"
+                variant="outline-success"
+                name="radio"
+                value={toolType}
+                checked={tool === toolType}
+                onChange={() => setTool(toolType)}
+              >
+                {toolType}
+              </ToggleButton>
+            ))}
+          </ButtonGroup>
           <Nav className="me-auto">
             <Nav.Link
               href="https://github.com/ShaMan123/erase2d"
@@ -27,7 +53,7 @@ export default function MyApp({ Component, pageProps }) {
           </Nav>
         </Container>
       </Navbar>
-      <Component {...pageProps} />
+      <Component {...pageProps} tool={tool} />
     </>
   );
 }
