@@ -43,7 +43,7 @@ export function clipObject(
  * @param {FabricObject} object The clipPath to apply to path belongs to object
  * @returns {Promise<Path>}
  */
-export function clonePathWithClipPath(
+export function cloneAndClip(
   path: Path,
   object: FabricObject & Required<Pick<FabricObject, 'clipPath'>>
 ) {
