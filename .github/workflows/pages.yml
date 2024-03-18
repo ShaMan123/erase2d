@@ -47,8 +47,8 @@ jobs:
 
       - name: Build
         run: |
+          npm i @rollup/rollup-linux-x64-gnu --save
           npm ci --workspaces --include-workspace-root
-          npm i @rollup/rollup-linux-x64-gnu
           # order matters!
           npm run build -w @erase2d/fabric
           npm run build -w @erase2d/app
