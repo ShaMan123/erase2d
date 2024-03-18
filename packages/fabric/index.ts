@@ -3,8 +3,9 @@
 export { ClippingGroup } from './src/ClippingGroup';
 export {
   EraserBrush,
-  type ErasingEventType,
-  type ErasingEvent,
-  eraseObject,
   eraseCanvasDrawable,
+  eraseObject,
+  type ErasingEvent,
+  type ErasingEventType,
 } from './src/EraserBrush';
+export { isTransparent } from './src/isTransparent';
