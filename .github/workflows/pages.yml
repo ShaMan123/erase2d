@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -47,7 +47,7 @@ jobs:
 
       - name: Build
         run: |
-          npm i @erase2d/fabric -w @erase2d/app
+          npm i @erase2d/fabric --save -w @erase2d/app
           npm run build -w @erase2d/app
 
       - name: Upload artifact
