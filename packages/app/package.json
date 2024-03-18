@@ -1,0 +1,38 @@
+{
+  "name": "@erase2d/app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@erase2d/fabric": "file:../fabric",
+    "bootstrap": "^5.2.3",
+    "fabric": "^6.0.0-beta19",
+    "next": "^13.4.10",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.8",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "open-cli": "^7.0.1",
+    "typescript": "^4.7.4"
+  },
+  "license": "MIT",
+  "description": "erase2d app",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShaMan123/erase2d.git"
+  },
+  "author": "ShaMan123",
+  "bugs": {
+    "url": "https://github.com/ShaMan123/erase2d/issues"
+  },
+  "homepage": "https://github.com/ShaMan123/erase2d#readme"
+}
