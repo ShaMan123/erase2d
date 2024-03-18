@@ -47,7 +47,9 @@ jobs:
 
       - name: Build
         run: |
-          npm i @erase2d/fabric --save -w @erase2d/app
+          npm ci -w @erase2d/fabric -w @erase2d/app
+          # order matters!
+          npm run build -w @erase2d/fabric
           npm run build -w @erase2d/app
 
       - name: Upload artifact
