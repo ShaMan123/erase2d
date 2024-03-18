@@ -30,24 +30,31 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        with:
+          static_site_generator: next
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 'lts/*'
           cache: 'npm'
+
       - name: Build
         run: |
-          npm i @erase2d/fabric -w @erase2d/sandbox
-          npm run prepublish -w @erase2d/sandbox
+          npm i @erase2d/fabric -w @erase2d/app
+          npm run build -w @erase2d/app
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: './packages/sandbox/dist'
+          path: './packages/app/out'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
