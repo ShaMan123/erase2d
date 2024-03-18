@@ -47,7 +47,7 @@ jobs:
 
       - name: Build
         run: |
-          npm ci -w @erase2d/fabric -w @erase2d/app
+          npm ci --workspaces --include-workspace-root
           # order matters!
           npm run build -w @erase2d/fabric
           npm run build -w @erase2d/app
