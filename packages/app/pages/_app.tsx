@@ -21,9 +21,17 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Navbar bg="light">
-        <Container>
+        <Container className="flex-column">
           <Navbar.Brand>
-            <strong>Erase2d</strong> App
+            <Nav.Link
+              href="https://github.com/ShaMan123/erase2d"
+              target="_blank"
+              rel="noopener noreferrer"
+              active={false}
+            >
+              <i className="bi bi-github"></i>
+              <strong>Erase2d</strong> App
+            </Nav.Link>
           </Navbar.Brand>
           <ButtonGroup>
             {(['default', 'erase', 'undo'] as const).map((toolType) => (
@@ -31,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 key={toolType}
                 id={`radio-${toolType}`}
                 type="radio"
-                variant="outline-success"
+                variant="outline-info"
                 name="radio"
                 value={toolType}
                 checked={tool === toolType}
@@ -41,16 +49,6 @@ export default function App({ Component, pageProps }: AppProps) {
               </ToggleButton>
             ))}
           </ButtonGroup>
-          <Nav className="me-auto">
-            <Nav.Link
-              href="https://github.com/ShaMan123/erase2d"
-              target="_blank"
-              rel="noopener noreferrer"
-              active={false}
-            >
-              <small>Github</small>
-            </Nav.Link>
-          </Nav>
         </Container>
       </Navbar>
       <Component {...pageProps} tool={tool} />

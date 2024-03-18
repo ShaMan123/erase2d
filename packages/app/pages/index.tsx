@@ -41,7 +41,7 @@ const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
           erasable: true,
           clipPath: new fabric.Circle({ radius: 50, inverted: true }),
         }),
-        new fabric.Circle({ radius: 50, erasable: true })
+        new fabric.Circle({ radius: 50, fill: 'magenta', erasable: true })
       );
 
       const animate = (toState: number) => {
