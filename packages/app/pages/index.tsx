@@ -1,18 +1,13 @@
-import { EraserBrush, isTransparent } from '@erase2d/fabric';
+import { EraserBrush } from '@erase2d/fabric';
 import * as fabric from 'fabric';
 import { NextPage } from 'next';
-import { useCallback, useEffect, useRef } from 'react';
-import { Canvas } from '../components/Canvas';
+import { useCallback, useRef } from 'react';
+import { Canvas } from '../src/Canvas';
+import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 
 const IndexPage: NextPage = () => {
   const ref = useRef<fabric.Canvas>(null);
-  const workerRef = useRef<Worker>();
-
-  useEffect(() => {
-    const worker = new Worker(new URL('../worker.ts', import.meta.url));
-    workerRef.current = worker;
-    return () => worker.terminate();
-  }, []);
+  const isTransparent = useIsTransparentWorker();
 
   const onLoad = useCallback(
     (canvas: fabric.Canvas) => {
@@ -20,21 +15,23 @@ const IndexPage: NextPage = () => {
         width: window.innerWidth,
         height: window.innerHeight,
       });
+
       const eraser = (canvas.freeDrawingBrush = new EraserBrush(canvas));
       eraser.width = 30;
       eraser.on('end', async (e) => {
         e.preventDefault();
         await eraser.commit(e.detail);
         console.log(
-          'c?',
+          'isTransparent',
           await Promise.all(
             e.detail.targets.map(async (target) => [
               target,
-              await isTransparent(target, workerRef.current),
+              await isTransparent(target),
             ])
           )
         );
       });
+
       canvas.isDrawingMode = true;
 
       let state = 0;
@@ -47,7 +44,7 @@ const IndexPage: NextPage = () => {
       const setState = (_state: number) => {
         state = _state;
         const { name, active, inverted } = states[state];
-        button.set('text', `Tool: ${name}`);
+        button.set('text', `${name}`);
         canvas.isDrawingMode = active;
         eraser.inverted = inverted;
         canvas.requestRenderAll();
@@ -84,7 +81,7 @@ const IndexPage: NextPage = () => {
       };
       animate(1);
     },
-    [ref, workerRef]
+    [ref, isTransparent]
   );
 
   return (
