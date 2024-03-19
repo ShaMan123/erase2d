@@ -17,7 +17,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
-    "prepublish": "node -e 'process.env.CI' && npm run build",
+    "prepublish": "npm run prepublish --workspaces",
     "start": "npm run dev -w @erase2d/sandbox"
   },
   "keywords": [
@@ -33,7 +33,6 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@rollup/rollup-linux-x64-gnu": "^4.13.0",
     "rollup": "^4.13.0",
     "rollup-plugin-delete": "^2.0.0",
     "tslib": "^2.6.2"

@@ -47,10 +47,7 @@ jobs:
 
       - name: Build
         run: |
-          npm i @rollup/rollup-linux-x64-gnu
           npm ci --workspaces --include-workspace-root
-          # order matters!
-          npm run build
           npm run build -w @erase2d/app
 
       - name: Upload artifact

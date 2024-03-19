@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build",
+    "serve": "python3 -m http.server 8080 --bind localhost -d out",
     "start": "next start",
     "type-check": "tsc"
   },
