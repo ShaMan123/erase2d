@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Navbar bg="light">
         <Container>
-          <Navbar.Brand>
+          <Nav>
             <Nav.Link
               href="https://github.com/ShaMan123/erase2d"
               target="_blank"
@@ -34,6 +35,8 @@ export default function App({ Component, pageProps }: AppProps) {
             >
               <i className="bi bi-github"></i>
             </Nav.Link>
+          </Nav>
+          <Navbar.Brand>
             <Nav.Link
               as={Link}
               href="/"
@@ -53,22 +56,24 @@ export default function App({ Component, pageProps }: AppProps) {
               fabric
             </Nav.Link>
           </Nav>
-          <ButtonGroup>
-            {(['default', 'erase', 'undo'] as const).map((toolType) => (
-              <ToggleButton
-                key={toolType}
-                id={`radio-${toolType}`}
-                type="radio"
-                variant="outline-info"
-                name="radio"
-                value={toolType}
-                checked={tool === toolType}
-                onChange={() => setTool(toolType)}
-              >
-                {toolType}
-              </ToggleButton>
-            ))}
-          </ButtonGroup>
+          <Nav>
+            <ButtonGroup>
+              {(['default', 'erase', 'undo'] as const).map((toolType) => (
+                <ToggleButton
+                  key={toolType}
+                  id={`radio-${toolType}`}
+                  type="radio"
+                  variant="outline-info"
+                  name="radio"
+                  value={toolType}
+                  checked={tool === toolType}
+                  onChange={() => setTool(toolType)}
+                >
+                  {toolType}
+                </ToggleButton>
+              ))}
+            </ButtonGroup>
+          </Nav>
         </Container>
       </Navbar>
       <Component {...pageProps} tool={tool} />

@@ -33,16 +33,19 @@ const FabricPage: NextPage<{ tool: Tool }> = ({ tool }) => {
         );
       });
 
-      canvas.add(
-        new fabric.Rect({
-          width: 500,
-          height: 200,
-          fill: 'blue',
-          erasable: true,
-          clipPath: new fabric.Circle({ radius: 50, inverted: true }),
-        }),
-        new fabric.Circle({ radius: 50, fill: 'magenta', erasable: true })
-      );
+      const rect = new fabric.Rect({
+        width: 500,
+        height: 200,
+        fill: 'blue',
+        erasable: true,
+        clipPath: new fabric.Circle({ radius: 50, inverted: true }),
+      });
+      const circle = new fabric.Circle({
+        radius: 50,
+        fill: 'magenta',
+        erasable: true,
+      });
+      canvas.add(rect, circle);
 
       const animate = (toState: number) => {
         canvas.item(0).animate(
@@ -71,11 +74,7 @@ const FabricPage: NextPage<{ tool: Tool }> = ({ tool }) => {
     canvas.isDrawingMode = tool !== 'default';
   }, [ref, tool]);
 
-  return (
-    <div>
-      <Canvas ref={ref} onLoad={onLoad} />
-    </div>
-  );
+  return <Canvas ref={ref} onLoad={onLoad} />;
 };
 
 export default FabricPage;
