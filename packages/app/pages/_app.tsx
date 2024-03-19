@@ -16,7 +16,8 @@ import '../index.css';
 import { Tool } from '../src/tool';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { route } = useRouter();
+  const { route, asPath, basePath } = useRouter();
+  console.log({ route, asPath, basePath });
   const [tool, setTool] = useState<Tool>('erase');
   return (
     <>
@@ -39,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Navbar.Brand>
             <Nav.Link
               as={Link}
-              href="/"
+              href="./"
               legacyBehavior={false}
               active={route === '/'}
             >
@@ -49,9 +50,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <Nav className="me-auto">
             <Nav.Link
               as={Link}
-              href="/fabric"
+              href="./"
               legacyBehavior={false}
-              active={route === '/fabric'}
+              active={route === '/'}
             >
               fabric
             </Nav.Link>
