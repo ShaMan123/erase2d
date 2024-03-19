@@ -1,11 +1,9 @@
 import { NextPage } from 'next';
-import { Tool } from '../src/tool';
-import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { Tool } from '../src/tool';
 
-const FabricPage: NextPage<{ tool: Tool }> = ({ tool }) => {
-  const isTransparent = useIsTransparentWorker();
+const FabricPage: NextPage<{ tool: Tool }> = ({}) => {
   const router = useRouter();
   useEffect(() => {
     router.replace('fabric');
