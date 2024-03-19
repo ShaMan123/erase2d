@@ -1,5 +1,5 @@
 {
   "extends": ["../../tsconfig.json"],
-  "include": ["index.ts", "./types/fabric.d.ts"],
+  "include": ["index.ts"],
   "compilerOptions": { "outDir": "./dist" }
 }

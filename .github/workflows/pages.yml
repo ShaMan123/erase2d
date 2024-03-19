@@ -48,6 +48,8 @@ jobs:
       - name: Build
         run: |
           npm ci --workspaces --include-workspace-root
+          # fix npm bug
+          npm i @rollup/rollup-linux-x64-gnu
           npm run build -w @erase2d/app
 
       - name: Upload artifact

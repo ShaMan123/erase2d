@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "prepublish": "npm run prepublish --workspaces --if-present",
-    "start": "npm run dev -w @erase2d/sandbox"
+    "start": "npm run dev -w @erase2d/app"
   },
   "keywords": [
     "erase",

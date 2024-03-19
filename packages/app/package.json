@@ -28,7 +28,6 @@
   },
   "license": "MIT",
   "description": "erase2d app",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShaMan123/erase2d.git"

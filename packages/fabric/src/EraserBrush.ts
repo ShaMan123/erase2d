@@ -1,6 +1,6 @@
+import { erase } from '@erase2d/core';
 import * as fabric from 'fabric';
 import { FabricObject, Group, Path } from 'fabric';
-import { erase } from '../../core/erase';
 import { ClippingGroup } from './ClippingGroup';
 import { draw } from './ErasingEffect';
 

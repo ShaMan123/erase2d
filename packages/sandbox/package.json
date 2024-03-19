@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "parcel index.html --no-cache --watch-dir ../",
     "start": "parcel index.html",
-    "build": "parcel build index.html",
-    "prepublish": "rm -rf ./dist && npm run build -- --no-cache --public-url './'"
+    "build": "parcel build index.html"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.7.0",
