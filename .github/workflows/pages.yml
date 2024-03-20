@@ -53,10 +53,12 @@ jobs:
           export BASE_PATH=/erase2d && npm run build -w @erase2d/app
 
       - name: Upload artifact
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: './packages/app/out'
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
         id: deployment
         uses: actions/deploy-pages@v4
