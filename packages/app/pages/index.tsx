@@ -22,16 +22,23 @@ const FabricPage: NextPage<{ tool: Tool }> = ({ tool }) => {
       eraser.on('end', async (e) => {
         e.preventDefault();
         await eraser.commit(e.detail);
-        console.log(
-          'isTransparent',
-          new Map(
-            await Promise.all(
-              e.detail.targets.map(
-                async (target) => [target, await isTransparent(target)] as const
-              )
-            )
+        const transparent = await Promise.all(
+          e.detail.targets.map(
+            async (target) => [target, await isTransparent(target)] as const
           )
         );
+        const fullyTransparent = transparent
+          .filter(([, transparent]) => transparent)
+          .map(([object]) => object);
+        fullyTransparent.forEach((object) =>
+          (object.parent || canvas).remove(object)
+        );
+        canvas.requestRenderAll();
+        fullyTransparent.length &&
+          console.log(
+            'Removed the following fully erased objects',
+            fullyTransparent
+          );
       });
 
       const rect = new fabric.Rect({

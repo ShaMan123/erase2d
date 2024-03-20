@@ -11,7 +11,7 @@ const nextConfig = {
     process.env.NODE_ENV === 'production'
       ? 'https://shaman123.github.io/erase2d/'
       : undefined,
-  publicPath: '/erase2d',
+  basePath: '/erase2d',
 };
 
 export default nextConfig;
