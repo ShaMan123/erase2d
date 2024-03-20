@@ -50,7 +50,7 @@ jobs:
           npm ci --workspaces --include-workspace-root
           # fix npm bug
           npm i @rollup/rollup-linux-x64-gnu
-          npm run build -w @erase2d/app
+          export BASE_PATH=/erase2d && npm run build -w @erase2d/app
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

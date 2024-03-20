@@ -1,3 +1,5 @@
+const basePath = process.env.BASE_PATH || undefined;
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -7,8 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix: process.env.CI ? '/erase2d/' : undefined,
-  basePath: process.env.CI ? '/erase2d' : undefined,
+  assetPrefix: basePath,
+  basePath: basePath,
 };
 
 export default nextConfig;
