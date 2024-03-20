@@ -2,7 +2,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
   ButtonGroup,
@@ -15,8 +14,6 @@ import '../index.css';
 import { Tool } from '../src/tool';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  console.log(router);
   const [tool, setTool] = useState<Tool>('erase');
   return (
     <>

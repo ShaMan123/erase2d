@@ -24,11 +24,12 @@ const FabricPage: NextPage<{ tool: Tool }> = ({ tool }) => {
         await eraser.commit(e.detail);
         console.log(
           'isTransparent',
-          await Promise.all(
-            e.detail.targets.map(async (target) => [
-              target,
-              await isTransparent(target),
-            ])
+          new Map(
+            await Promise.all(
+              e.detail.targets.map(
+                async (target) => [target, await isTransparent(target)] as const
+              )
+            )
           )
         );
       });
