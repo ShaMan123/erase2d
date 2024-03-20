@@ -12,11 +12,6 @@ const nextConfig = {
       ? 'https://shaman123.github.io/erase2d/'
       : undefined,
   publicPath: '/erase2d',
-  // webpack(config) {
-  //   // Ensures that web workers work after deployed by github
-  //   config.output.publicPath = '/erase2d/_next/';
-  //   return config;
-  // },
 };
 
 export default nextConfig;
