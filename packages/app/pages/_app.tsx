@@ -6,6 +6,7 @@ import { useState } from 'react';
 import {
   ButtonGroup,
   Container,
+  Form,
   Nav,
   Navbar,
   ToggleButton,
@@ -18,6 +19,7 @@ import { useRouter } from 'next/router';
 export default function App({ Component, pageProps }: AppProps) {
   const { route } = useRouter();
   const [tool, setTool] = useState<Tool>('erase');
+  const [removeFullyErased, setRemoveFullyErased] = useState<boolean>(true);
   return (
     <>
       <Head>
@@ -26,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Navbar bg="light">
         <Container>
-          <Navbar.Brand>
+          <Navbar.Brand className="me-5">
             <Nav.Link
               as={Link}
               href="/"
@@ -38,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </Navbar.Brand>
 
           <Nav className="me-auto">
-            <ButtonGroup>
+            <ButtonGroup className="me-5">
               {(['default', 'erase', 'undo'] as const).map((toolType) => (
                 <ToggleButton
                   key={toolType}
@@ -54,6 +56,15 @@ export default function App({ Component, pageProps }: AppProps) {
                 </ToggleButton>
               ))}
             </ButtonGroup>
+            <Form.Check
+              type="switch"
+              id="rm-erased-switch"
+              label="Remove fully erased objects"
+              inline
+              className="m-auto"
+              checked={removeFullyErased}
+              onChange={(e) => setRemoveFullyErased(e.target.checked)}
+            />
           </Nav>
 
           <Nav>
@@ -68,7 +79,11 @@ export default function App({ Component, pageProps }: AppProps) {
           </Nav>
         </Container>
       </Navbar>
-      <Component {...pageProps} tool={tool} />
+      <Component
+        {...pageProps}
+        tool={tool}
+        removeFullyErased={removeFullyErased}
+      />
     </>
   );
 }
