@@ -9,7 +9,7 @@ Contributions are welcome, ping me in a feature request.
 
 ## Dev
 
-Start the [sandbox app](./packages/sandbox/README.md)
+Start the [app](./packages/app/README.md)
 
 ```bash
 npm start
