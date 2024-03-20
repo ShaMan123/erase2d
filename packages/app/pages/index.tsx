@@ -98,6 +98,8 @@ const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
           ],
           {
             erasable: !!group,
+            subTargetCheck: true,
+            interactive: true,
             clipPath: new fabric.Circle({
               radius: 50,
               left: 25,
@@ -112,7 +114,13 @@ const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
       canvas.add(
         rect,
         ...(!!group
-          ? [new fabric.Group(objects, { erasable: group })]
+          ? [
+              new fabric.Group(objects, {
+                erasable: group,
+                subTargetCheck: true,
+                interactive: true,
+              }),
+            ]
           : objects),
         circle
       );
@@ -165,7 +173,7 @@ const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
       return;
     }
     (canvas.freeDrawingBrush as EraserBrush).inverted = tool === 'undo';
-    canvas.isDrawingMode = tool !== 'default';
+    canvas.isDrawingMode = tool !== 'select';
   }, [ref, tool]);
 
   return <Canvas ref={ref} onLoad={onLoad} />;

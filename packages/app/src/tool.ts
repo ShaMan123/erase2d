@@ -1,1 +1,1 @@
-export type Tool = 'default' | 'erase' | 'undo';
+export type Tool = 'select' | 'erase' | 'undo';

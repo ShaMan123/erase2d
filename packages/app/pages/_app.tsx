@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
           <Nav className="me-auto">
             <ButtonGroup className="me-5">
-              {(['default', 'erase', 'undo'] as const).map((toolType) => (
+              {(['select', 'erase', 'undo'] as Tool[]).map((toolType) => (
                 <ToggleButton
                   key={toolType}
                   id={`radio-${toolType}`}
