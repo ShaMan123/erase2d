@@ -1,4 +1,4 @@
-## Sandbox App
+## App
 
 A lean next app for testing and bug reporting.
 
