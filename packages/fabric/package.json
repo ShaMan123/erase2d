@@ -4,7 +4,9 @@
   "description": "Fabric.js erase2d bindings",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,13 +34,17 @@
       "optional": false
     }
   },
-  "module": "./dist/fabric/index.js",
+  "dependencies": {
+    "@erase2d/core": "file:../core"
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/fabric/index.d.ts",
-      "import": "./dist/fabric/index.js",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "require": null,
-      "default": "./dist/fabric/index.js"
+      "default": "./dist/index.js"
     }
   }
 }

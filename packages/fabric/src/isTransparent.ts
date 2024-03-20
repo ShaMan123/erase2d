@@ -51,7 +51,6 @@ isTransparent.installWorker = function installWorker() {
     'message',
     (e: MessageEvent<{ imageData: ImageData; messageID: number }>) => {
       const { imageData, messageID } = e.data;
-      console.log(messageID);
       postMessage({
         isTransparent: isImageDataTransparent(imageData),
         messageID,

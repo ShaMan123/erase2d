@@ -1,12 +1,12 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ['master']
-  #   pull_request:
-  #     branches: ['master']
+  pull_request:
+    branches: ['master']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -47,14 +47,18 @@ jobs:
 
       - name: Build
         run: |
-          npm i @erase2d/fabric -w @erase2d/app
-          npm run build -w @erase2d/app
+          npm ci --workspaces --include-workspace-root
+          # fix npm bug
+          npm i @rollup/rollup-linux-x64-gnu
+          export BASE_PATH=/erase2d && npm run build -w @erase2d/app
 
       - name: Upload artifact
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: './packages/app/out'
 
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
         id: deployment
         uses: actions/deploy-pages@v4

@@ -6,7 +6,10 @@ import { Canvas } from '../src/Canvas';
 import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 import { Tool } from '../src/tool';
 
-const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
+const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
+  tool,
+  removeFullyErased,
+}) => {
   const ref = useRef<fabric.Canvas>(null);
   const isTransparent = useIsTransparentWorker();
 
@@ -19,33 +22,111 @@ const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
 
       const eraser = (canvas.freeDrawingBrush = new EraserBrush(canvas));
       eraser.width = 30;
-      eraser.on('end', async (e) => {
-        e.preventDefault();
-        await eraser.commit(e.detail);
-        console.log(
-          'isTransparent',
-          await Promise.all(
-            e.detail.targets.map(async (target) => [
-              target,
-              await isTransparent(target),
-            ])
-          )
-        );
-      });
 
-      canvas.add(
+      const group = 'deep';
+      const rect = new fabric.Rect({
+        width: 500,
+        height: 200,
+        fill: 'blue',
+        erasable: true,
+        clipPath: new fabric.Circle({ radius: 50, inverted: true }),
+      });
+      const circle = new fabric.Circle({
+        radius: 50,
+        fill: 'magenta',
+        erasable: true,
+      });
+      const objects = [
         new fabric.Rect({
-          width: 500,
-          height: 200,
+          width: 100,
+          height: 100,
           fill: 'blue',
           erasable: true,
-          clipPath: new fabric.Circle({ radius: 50, inverted: true }),
         }),
-        new fabric.Circle({ radius: 50, fill: 'magenta', erasable: true })
+        new fabric.Rect({
+          width: 100,
+          height: 100,
+          left: 50,
+          top: 50,
+          fill: 'magenta',
+          erasable: false,
+        }),
+        new fabric.Circle({
+          radius: 200,
+          /*opacity: 0.8,*/ fill: 'rgba(255,255,0,0.4)',
+          erasable: false,
+        }),
+        new fabric.Rect({
+          width: 100,
+          height: 100,
+          left: 100,
+          top: 100,
+          fill: 'red',
+          erasable: false,
+          opacity: 0.8,
+        }),
+        new fabric.Rect({
+          width: 100,
+          height: 100,
+          left: 0,
+          top: 100,
+          fill: 'red',
+          erasable: false,
+        }),
+        new fabric.Circle({
+          radius: 50,
+          left: 100,
+          top: 100,
+          fill: 'cyan',
+          erasable: true,
+        }),
+        new fabric.Group(
+          [
+            new fabric.Circle({
+              radius: 50,
+              left: 0,
+              top: 100,
+              fill: 'cyan',
+              clipPath: new fabric.Circle({
+                radius: 50,
+                left: -25,
+                top: -25,
+                originX: 'center',
+                originY: 'center',
+              }),
+            }),
+          ],
+          {
+            erasable: !!group,
+            subTargetCheck: true,
+            interactive: true,
+            clipPath: new fabric.Circle({
+              radius: 50,
+              left: 25,
+              top: 25,
+              originX: 'center',
+              originY: 'center',
+            }),
+          }
+        ),
+      ];
+
+      canvas.add(
+        rect,
+        ...(!!group
+          ? [
+              new fabric.Group(objects, {
+                erasable: group,
+                subTargetCheck: true,
+                interactive: true,
+              }),
+            ]
+          : objects),
+        circle
       );
 
       const animate = (toState: number) => {
-        canvas.item(0).animate(
+        rect.animate(
           { scaleX: Math.max(toState, 0.1) * 2 },
           {
             onChange: () => canvas.renderAll(),
@@ -59,8 +140,32 @@ const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
       };
       animate(1);
     },
-    [ref, isTransparent]
+    [ref]
   );
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas || !removeFullyErased) {
+      return;
+    }
+    const eraser = canvas.freeDrawingBrush as EraserBrush;
+    return eraser.on('end', async (e) => {
+      e.preventDefault();
+      await eraser.commit(e.detail);
+      const transparent = await Promise.all(
+        e.detail.targets.map(
+          async (target) => [target, await isTransparent(target)] as const
+        )
+      );
+      const fullyErased = transparent
+        .filter(([, transparent]) => transparent)
+        .map(([object]) => object);
+      fullyErased.forEach((object) => (object.parent || canvas).remove(object));
+      canvas.requestRenderAll();
+      fullyErased.length &&
+        console.log('Removed the following fully erased objects', fullyErased);
+    });
+  }, [ref, removeFullyErased]);
 
   useEffect(() => {
     const canvas = ref.current;
@@ -68,14 +173,10 @@ const IndexPage: NextPage<{ tool: Tool }> = ({ tool }) => {
       return;
     }
     (canvas.freeDrawingBrush as EraserBrush).inverted = tool === 'undo';
-    canvas.isDrawingMode = tool !== 'default';
+    canvas.isDrawingMode = tool !== 'select';
   }, [ref, tool]);
 
-  return (
-    <div>
-      <Canvas ref={ref} onLoad={onLoad} />
-    </div>
-  );
+  return <Canvas ref={ref} onLoad={onLoad} />;
 };
 
-export default IndexPage;
+export default FabricPage;
