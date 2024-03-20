@@ -21,10 +21,6 @@ npm start
 npm init -w ./packages/a
 ```
 
-## Build
-
-[esbuild](https://esbuild.github.io/getting-started/#bundling-for-the-browser)
-
 ## Publish
 
 ```bash

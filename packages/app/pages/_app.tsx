@@ -1,8 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
@@ -16,8 +15,8 @@ import '../index.css';
 import { Tool } from '../src/tool';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { route, asPath, basePath } = useRouter();
-  console.log({ route, asPath, basePath });
+  const router = useRouter();
+  console.log(router);
   const [tool, setTool] = useState<Tool>('erase');
   return (
     <>
@@ -27,37 +26,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Navbar bg="light">
         <Container>
-          <Nav>
-            <Nav.Link
-              href="https://github.com/ShaMan123/erase2d"
-              target="_blank"
-              rel="noopener noreferrer"
-              active={false}
-            >
-              <i className="bi bi-github"></i>
-            </Nav.Link>
-          </Nav>
           <Navbar.Brand>
-            <Nav.Link
-              as={Link}
-              href="./"
-              legacyBehavior={false}
-              active={route === '/'}
-            >
-              <strong>Erase2d</strong> App
-            </Nav.Link>
+            <strong>Erase2d</strong> App
           </Navbar.Brand>
+
           <Nav className="me-auto">
-            <Nav.Link
-              as={Link}
-              href="./"
-              legacyBehavior={false}
-              active={route === '/'}
-            >
-              fabric
-            </Nav.Link>
-          </Nav>
-          <Nav>
             <ButtonGroup>
               {(['default', 'erase', 'undo'] as const).map((toolType) => (
                 <ToggleButton
@@ -74,6 +47,17 @@ export default function App({ Component, pageProps }: AppProps) {
                 </ToggleButton>
               ))}
             </ButtonGroup>
+          </Nav>
+
+          <Nav>
+            <Nav.Link
+              href="https://github.com/ShaMan123/erase2d"
+              target="_blank"
+              rel="noopener noreferrer"
+              active={false}
+            >
+              <i className="bi bi-github"></i>
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
