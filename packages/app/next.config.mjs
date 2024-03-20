@@ -7,11 +7,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  assetPrefix:
-    process.env.NODE_ENV === 'production'
-      ? 'https://shaman123.github.io/erase2d/'
-      : undefined,
-  basePath: '/erase2d',
+  assetPrefix: process.env.CI
+    ? 'https://shaman123.github.io/erase2d/'
+    : undefined,
+  basePath: process.env.CI ? '/erase2d/' : undefined,
 };
 
 export default nextConfig;
