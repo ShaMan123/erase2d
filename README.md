@@ -1,4 +1,4 @@
-# Erase2d
+# [Erase2d](https://shaman123.github.io/erase2d/)
 
 A simple erasing tool.
 
