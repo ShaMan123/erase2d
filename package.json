@@ -16,7 +16,6 @@
   "homepage": "https://github.com/ShaMan123/erase2d#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
     "prepublish": "npm run prepublish --workspaces --if-present",
     "start": "npm run dev -w @erase2d/app"
   },

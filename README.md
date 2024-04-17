@@ -12,6 +12,8 @@ Contributions are welcome, ping me in a feature request.
 Start the [app](./packages/app/README.md)
 
 ```bash
+npm run build -w @erase2d/core -- -w
+npm run build -w @erase2d/fabric -- -w
 npm start
 ```
 

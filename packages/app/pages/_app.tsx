@@ -1,11 +1,16 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FabricObject } from 'fabric/dist/fabric';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ButtonGroup,
   Container,
+  Dropdown,
+  DropdownButton,
   Form,
   Nav,
   Navbar,
@@ -13,13 +18,29 @@ import {
 } from 'react-bootstrap';
 import '../index.css';
 import { Tool } from '../src/tool';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { route } = useRouter();
   const [tool, setTool] = useState<Tool>('erase');
   const [removeFullyErased, setRemoveFullyErased] = useState<boolean>(true);
+  const [activeObject, setActiveObject] = useState<FabricObject>();
+  const [erasable, setErasable] = useState<boolean | 'deep' | undefined>();
+  useEffect(() => setErasable(activeObject?.erasable), [activeObject]);
+  const onSelect = useCallback(
+    (eventKey: string | null) => {
+      if (!activeObject || eventKey === null) {
+        setErasable(undefined);
+        return;
+      }
+
+      const erasable =
+        eventKey === 'deep' ? eventKey : Boolean(Number(eventKey));
+      activeObject.erasable = erasable;
+      setErasable(erasable);
+    },
+    [activeObject, setErasable]
+  );
+
   return (
     <>
       <Head>
@@ -61,10 +82,32 @@ export default function App({ Component, pageProps }: AppProps) {
               id="rm-erased-switch"
               label="Remove fully erased objects"
               inline
-              className="m-auto"
               checked={removeFullyErased}
               onChange={(e) => setRemoveFullyErased(e.target.checked)}
+              className="my-auto"
             />
+            {activeObject && (
+              <>
+                <span className="me-2 my-auto">erasable:</span>
+                <DropdownButton
+                  id="dropdown-basic-button"
+                  title={erasable?.toString() || ''}
+                  onSelect={onSelect}
+                  variant="info"
+                  className="m-auto"
+                >
+                  <Dropdown.Item eventKey={0} active={!erasable}>
+                    false
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey={1} active={erasable === true}>
+                    true
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="deep" active={erasable === 'deep'}>
+                    deep
+                  </Dropdown.Item>
+                </DropdownButton>
+              </>
+            )}
           </Nav>
 
           <Nav>
@@ -83,6 +126,7 @@ export default function App({ Component, pageProps }: AppProps) {
         {...pageProps}
         tool={tool}
         removeFullyErased={removeFullyErased}
+        setActiveObject={setActiveObject}
       />
     </>
   );
