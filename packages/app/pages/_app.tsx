@@ -1,8 +1,11 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FabricObject } from 'fabric/dist/fabric';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ButtonGroup,
   Container,
@@ -15,9 +18,6 @@ import {
 } from 'react-bootstrap';
 import '../index.css';
 import { Tool } from '../src/tool';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FabricObject } from 'fabric/dist/fabric';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { route } = useRouter();
