@@ -6,10 +6,11 @@ import { Canvas } from '../src/Canvas';
 import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 import { Tool } from '../src/tool';
 
-const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
-  tool,
-  removeFullyErased,
-}) => {
+const FabricPage: NextPage<{
+  tool: Tool;
+  removeFullyErased: boolean;
+  setActiveObject: (object?: fabric.FabricObject) => void;
+}> = ({ tool, removeFullyErased, setActiveObject }) => {
   const ref = useRef<fabric.Canvas>(null);
   const isTransparent = useIsTransparentWorker();
 
@@ -174,6 +175,19 @@ const FabricPage: NextPage<{ tool: Tool; removeFullyErased: boolean }> = ({
     }
     (canvas.freeDrawingBrush as EraserBrush).inverted = tool === 'undo';
     canvas.isDrawingMode = tool !== 'select';
+  }, [ref, tool]);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) {
+      return;
+    }
+    const disposers = (
+      ['selection:created', 'selection:updated', 'selection:cleared'] as const
+    ).map((ev) =>
+      canvas.on(ev, () => setActiveObject(canvas.getActiveObject()))
+    );
+    return () => disposers.forEach((d) => d());
   }, [ref, tool]);
 
   return <Canvas ref={ref} onLoad={onLoad} />;
