@@ -29,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const onSelect = useCallback(
     (eventKey: string | null) => {
       if (!activeObject || eventKey === null) {
+        setErasable(undefined);
         return;
       }
 
