@@ -41,8 +41,8 @@ const assertClippingGroup = (object: fabric.FabricObject) => {
   }
 
   const next = new ClippingGroup([], {
-    width: object.width,
-    height: object.height,
+    width: object.width + object.strokeWidth,
+    height: object.height + object.strokeWidth,
   });
 
   if (curr) {
