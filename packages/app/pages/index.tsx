@@ -3,8 +3,8 @@ import * as fabric from 'fabric';
 import { NextPage } from 'next';
 import { useCallback, useEffect, useRef } from 'react';
 import { Canvas } from '../src/Canvas';
-import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 import { Tool } from '../src/tool';
+import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 
 const FabricPage: NextPage<{
   tool: Tool;
@@ -80,6 +80,11 @@ const FabricPage: NextPage<{
           top: 100,
           fill: 'cyan',
           erasable: true,
+          shadow: new fabric.Shadow({
+            offsetX: 20,
+            offsetY: 20,
+            color: 'rgba(255,0,0,0.3)',
+          }),
         }),
         new fabric.Group(
           [
@@ -146,10 +151,33 @@ const FabricPage: NextPage<{
 
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas || !removeFullyErased) {
+    if (!canvas) {
       return;
     }
-    const eraser = canvas.freeDrawingBrush as EraserBrush;
+    const brush = (canvas.freeDrawingBrush =
+      tool === 'draw'
+        ? new fabric.PencilBrush(canvas)
+        : new EraserBrush(canvas));
+    brush.width = 30;
+    brush instanceof EraserBrush && (brush.inverted = tool === 'undo');
+    canvas.isDrawingMode = tool !== 'select';
+    return canvas.on(
+      'path:created',
+      ({ path }) => tool === 'draw' && (path.erasable = true)
+    );
+  }, [ref, tool]);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (
+      !canvas ||
+      !removeFullyErased ||
+      (tool !== 'erase' && tool !== 'undo') ||
+      !(canvas.freeDrawingBrush instanceof EraserBrush)
+    ) {
+      return;
+    }
+    const eraser = canvas.freeDrawingBrush;
     return eraser.on('end', async (e) => {
       e.preventDefault();
       await eraser.commit(e.detail);
@@ -166,16 +194,7 @@ const FabricPage: NextPage<{
       fullyErased.length &&
         console.log('Removed the following fully erased objects', fullyErased);
     });
-  }, [ref, removeFullyErased]);
-
-  useEffect(() => {
-    const canvas = ref.current;
-    if (!canvas) {
-      return;
-    }
-    (canvas.freeDrawingBrush as EraserBrush).inverted = tool === 'undo';
-    canvas.isDrawingMode = tool !== 'select';
-  }, [ref, tool]);
+  }, [ref, tool, removeFullyErased]);
 
   useEffect(() => {
     const canvas = ref.current;

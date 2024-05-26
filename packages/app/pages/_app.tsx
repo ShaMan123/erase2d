@@ -17,7 +17,7 @@ import {
   ToggleButton,
 } from 'react-bootstrap';
 import '../index.css';
-import { Tool } from '../src/tool';
+import { TOOL, Tool } from '../src/tool';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { route } = useRouter();
@@ -62,7 +62,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
           <Nav className="me-auto">
             <ButtonGroup className="me-5">
-              {(['select', 'erase', 'undo'] as Tool[]).map((toolType) => (
+              {TOOL.map((toolType) => (
                 <ToggleButton
                   key={toolType}
                   id={`radio-${toolType}`}
