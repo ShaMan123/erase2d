@@ -40,9 +40,15 @@ const assertClippingGroup = (object: fabric.FabricObject) => {
     return curr;
   }
 
+  // In order to support objects with stroke width, stroke uniform, shadow etc.
+  // we use the actual drawn size
+  const { width, height } = object._limitCacheSize(
+    object._getCacheCanvasDimensions()
+  );
+
   const next = new ClippingGroup([], {
-    width: object.width,
-    height: object.height,
+    width,
+    height,
   });
 
   if (curr) {
