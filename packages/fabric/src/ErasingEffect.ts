@@ -1,4 +1,4 @@
-import { Canvas, Group, FabricObject } from 'fabric';
+import { Canvas, FabricObject, Group } from 'fabric';
 import { ClippingGroup } from './ClippingGroup';
 
 function walk(objects: FabricObject[]): FabricObject[] {
@@ -56,6 +56,9 @@ function drawCanvas(
  * If brush is **NOT** inverted render all non-erasable objects.\
  * If brush is inverted render all objects, erasable objects without their eraser.
  * This will render the erased parts as if they were not erased in the first place, achieving an undo effect.
+ *
+ * Caveat:
+ * Does not support erasing effects of shadows
  *
  */
 export function draw(

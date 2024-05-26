@@ -80,6 +80,11 @@ const FabricPage: NextPage<{
           top: 100,
           fill: 'cyan',
           erasable: true,
+          shadow: new fabric.Shadow({
+            offsetX: 20,
+            offsetY: 20,
+            color: 'rgba(255,0,0,0.3)',
+          }),
         }),
         new fabric.Group(
           [
