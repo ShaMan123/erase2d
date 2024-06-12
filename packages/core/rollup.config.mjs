@@ -1,5 +1,4 @@
 import { babel } from '@rollup/plugin-babel';
-import terser from '@rollup/plugin-terser';
 import ts from '@rollup/plugin-typescript';
 import del from 'rollup-plugin-delete';
 
@@ -16,7 +15,7 @@ export default [
       preserveModules: true,
       entryFileNames: '[name].js',
       sourcemap: true,
-      plugins: [terser()],
+      // plugins: [terser()],
     },
     plugins: [
       del({

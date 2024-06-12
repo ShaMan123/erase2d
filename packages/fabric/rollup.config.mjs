@@ -1,5 +1,5 @@
 import { babel } from '@rollup/plugin-babel';
-import terser from '@rollup/plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import ts from '@rollup/plugin-typescript';
 import del from 'rollup-plugin-delete';
 
@@ -16,12 +16,16 @@ export default [
       preserveModules: true,
       entryFileNames: '[name].js',
       sourcemap: true,
-      plugins: [terser()],
+      // plugins: [terser()],
     },
     plugins: [
       del({
         targets: ['dist/*'],
       }),
+
+      // resolve and build `@erase2d/core`
+      nodeResolve(),
+
       ts({
         noForceEmit: true,
         tsconfig: 'tsconfig.json',
@@ -33,6 +37,6 @@ export default [
         presets: [['@babel/env'], ['@babel/typescript']],
       }),
     ],
-    external: ['fabric', '@erase2d/core'],
+    external: ['fabric'],
   },
 ];
