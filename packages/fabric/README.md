@@ -74,4 +74,6 @@ https://github.com/ShaMan123/erase2d/blob/4c9657f8e2d6c20e7274f49a8f8e6d907f9e02
 
 ## Dev
 
-see main [`README`](../../README.md).
+The build command will build [`src`](./src) and copy [`core`](../core/dist) into [`dist`](./dist).
+
+For the rest, see the main [`README`](../../README.md).
