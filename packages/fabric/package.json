@@ -27,7 +27,7 @@
     "fabric"
   ],
   "peerDependencies": {
-    "fabric": "^6.0.0-beta19"
+    "fabric": "^6.0.0-rc2"
   },
   "peerDependenciesMeta": {
     "fabric": {
