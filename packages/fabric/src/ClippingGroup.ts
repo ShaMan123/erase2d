@@ -1,30 +1,24 @@
 import {
-  Group,
-  LayoutManager,
-  FixedLayout,
-  Path,
   FabricObject,
+  FixedLayout,
+  Group,
   GroupProps,
+  LayoutManager,
+  Path,
   classRegistry,
 } from 'fabric';
 
 export class ClippingGroup extends Group {
   static type = 'clipping';
 
-  static getDefaults(): Record<string, any> {
-    return {
-      ...super.getDefaults(),
-      originX: 'center',
-      originY: 'center',
-      left: 0,
-      top: 0,
-    };
-  }
-
   private blockErasing = false;
 
   constructor(objects: FabricObject[], options: Partial<GroupProps>) {
     super(objects, {
+      originX: 'center',
+      originY: 'center',
+      left: 0,
+      top: 0,
       layoutManager: new LayoutManager(new FixedLayout()),
       ...options,
     });

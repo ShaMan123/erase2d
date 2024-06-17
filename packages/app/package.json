@@ -11,7 +11,7 @@
     "@erase2d/fabric": "file:../fabric",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.11.3",
-    "fabric": "^6.0.0-beta19",
+    "fabric": "^6.0.0-rc2",
     "next": "^13.4.10",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
