@@ -106,7 +106,7 @@ export function draw(
       return;
     }
     if (entry.opacity) {
-      entry.object.opacity = opacity;
+      entry.object.opacity = entry.opacity;
       entry.object.parent?.set('dirty', true);
     } else if (entry.clipPath) {
       entry.clipPath['blockErasing'] = false;
