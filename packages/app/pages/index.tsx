@@ -180,7 +180,8 @@ const FabricPage: NextPage<{
     const eraser = canvas.freeDrawingBrush;
     return eraser.on('end', async (e) => {
       e.preventDefault();
-      await eraser.commit(e.detail);
+      const res = await eraser.commit(e.detail);
+      console.log(res);
       const transparent = await Promise.all(
         e.detail.targets.map(
           async (target) => [target, await isTransparent(target)] as const

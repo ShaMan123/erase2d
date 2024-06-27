@@ -341,8 +341,11 @@ export class EraserBrush extends fabric.PencilBrush {
     return path;
   }
 
-  async commit({ path, targets }: EventDetailMap['end']) {
-    new Map(
+  async commit({
+    path,
+    targets,
+  }: EventDetailMap['end']): Promise<Map<fabric.FabricObject, fabric.Path>> {
+    return new Map(
       await Promise.all([
         ...targets.map(async (object) => {
           return [object, await eraseObject(object, path)] as const;
@@ -368,7 +371,7 @@ export class EraserBrush extends fabric.PencilBrush {
             return [
               object,
               await eraseCanvasDrawable(object as FabricObject, vptFlag, path),
-            ] as const;
+            ] as [fabric.FabricObject, fabric.Path];
           }),
       ])
     );
