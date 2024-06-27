@@ -39,10 +39,10 @@
     "@rollup/plugin-node-resolve": "^15.2.3"
   },
   "module": "./dist/fabric/index.js",
-  "types": "./dist/fabric/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/fabric/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/fabric/index.js",
       "require": null,
       "default": "./dist/fabric/index.js"
