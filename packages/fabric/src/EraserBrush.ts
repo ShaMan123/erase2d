@@ -366,7 +366,7 @@ export class EraserBrush extends fabric.PencilBrush {
             ],
           ] as const
         )
-          .filter(([object]) => object)
+          .filter(([object]) => !!object?.erasable)
           .map(async ([object, vptFlag]) => {
             return [
               object,
