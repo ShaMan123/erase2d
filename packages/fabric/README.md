@@ -47,10 +47,12 @@ eraser.on('start', (e) => {
 eraser.on('end', async (e) => {
   // prevent from committing erasing to the tree
   e.preventDefault();
-  const isErased = e.targets.includes(circle);
+
+  const { path, targets } = e.detail;
+  const isErased = targets.includes(circle);
 
   // commit erasing manually
-  const pathPerObjectMap = await eraser.commit(e.detail);
+  const pathPerObjectMap = await eraser.commit({ path, targets });
 
   const committedEraser = circle.clipPath instanceof ClippingGroup;
 });
