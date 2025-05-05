@@ -211,6 +211,8 @@ export class EraserBrush extends fabric.PencilBrush {
   }
 
   drawEffect() {
+    this.mip = this.canvas.toCanvasElement(window.devicePixelRatio);
+
     draw(
       this.effectContext,
       {
@@ -293,33 +295,27 @@ export class EraserBrush extends fabric.PencilBrush {
    * @override erase
    */
   _render(ctx: CanvasRenderingContext2D = this.canvas.getTopContext()): void {
-    this.canvas.clearContext(ctx);
-    const path = this.buildPathFill(this.width);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    ctx.save();
-    ctx.clip(path, 'nonzero');
-    const { canvas: effectCanvas } = this.effectContext;
+    const { width, height } = this.canvas;
     const dpr = window.devicePixelRatio;
-    ctx.drawImage(
-      effectCanvas,
-      0,
-      0,
-      Math.floor(effectCanvas.width * dpr),
-      Math.floor(effectCanvas.height * dpr),
-      0,
-      0,
-      effectCanvas.width,
-      effectCanvas.height
-    );
-    ctx.restore();
+    this.canvas.clearContext(ctx);
+    super._render(ctx);
+    ctx.globalCompositeOperation = 'source-in';
+    const args = [0, 0, width * dpr, height * dpr, 0, 0, width, height];
+    ctx.drawImage(this.effectContext.canvas, ...args);
+    ctx.globalCompositeOperation = 'source-over';
 
     const base = this.canvas.getContext();
     base.save();
+    this._setBrushStyles(base);
+    this.canvas.clearContext(base);
+    base.drawImage(this.mip, ...args);
     base.globalCompositeOperation = 'destination-out';
-    base.fill(path);
+    super._render(base);
+    base.globalCompositeOperation = 'source-over';
+    base.drawImage(ctx.canvas, ...args);
+    this.canvas.clearContext(ctx);
     base.restore();
+    // erase(this.canvas.getContext(), ctx, this.effectContext);
   }
 
   /**
