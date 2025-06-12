@@ -30,3 +30,5 @@ npm run prepublish
 npm -w @erase2d/fabric version <type>
 npm -w @erase2d/fabric publish
 ```
+
+## Sponsors
