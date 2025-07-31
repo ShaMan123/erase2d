@@ -32,3 +32,23 @@ npm -w @erase2d/fabric publish
 ```
 
 ## Sponsors
+
+<table>
+  <tr>
+    <td align="center" vertical-align="center">
+      <a href="https://rembg.com/?utm_source=erase2d&utm_medium=github_readme&utm_campaign=sponsorship" >
+        <img width="120px" height="120px" alt="RemBG.com Logo" src="https://github.com/user-attachments/assets/25433a27-5758-4c02-8375-649acde37556" />
+      </a>
+    </td>
+    <td align="center" vertical-align="center">
+      <b>RemBG Remove Background API</b>
+      <br />
+      <a href="https://rembg.com/?utm_source=erase2d&utm_medium=github_readme&utm_campaign=sponsorship">https://rembg.com</a>
+      <br />
+      <p width="200px">
+      Accurate and affordable background remover API
+        <br/>
+      </p>
+    </td>
+  </tr>
+</table>
