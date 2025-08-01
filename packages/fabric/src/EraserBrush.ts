@@ -1,4 +1,3 @@
-import { erase } from '@erase2d/core';
 import * as fabric from 'fabric';
 import { FabricObject, Group, Path } from 'fabric';
 import { ClippingGroup } from './ClippingGroup';
@@ -212,6 +211,8 @@ export class EraserBrush extends fabric.PencilBrush {
   }
 
   drawEffect() {
+    this.mip = this.canvas.toCanvasElement(window.devicePixelRatio);
+
     draw(
       this.effectContext,
       {
@@ -238,12 +239,83 @@ export class EraserBrush extends fabric.PencilBrush {
     return true;
   }
 
+  buildPath(path: Path2D, points: fabric.Point[]) {
+    let [p1, p2] = points;
+
+    //if we only have 2 points in the path and they are the same
+    //it means that the user only clicked the canvas without moving the mouse
+    //then we should be drawing a dot. A path isn't drawn between two identical dots
+    //that's why we set them apart a bit
+    if (points.length === 2 && p1.x === p2.x && p1.y === p2.y) {
+      const width = this.width / 1000;
+      p1.x -= width;
+      p2.x += width;
+    }
+    path.moveTo(p1.x, p1.y);
+
+    for (let i = 1; i < points.length; i++) {
+      // we pick the point between pi + 1 & pi + 2 as the
+      // end point and p1 as our control point.
+      const midPoint = p1.midPointFrom(p2);
+      path.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
+      p1 = points[i];
+      p2 = points[i + 1];
+    }
+    // Draw last line as a straight line while
+    // we wait for the next point to be able to calculate
+    // the bezier control point
+    path.lineTo(p1.x, p1.y);
+
+    return path;
+  }
+
+  buildPathFill(strokeWidth: number) {
+    const points = this['_points'] as fabric.Point[];
+    const outline: fabric.Point[] = [points[0]];
+    points
+      .slice(1)
+      .filter((p, i) => {
+        const v = points[i].subtract(p);
+        return fabric.util.magnitude(v) >= 1;
+      })
+      .forEach((p, i) => {
+        const v = points[i].subtract(p);
+        const n = fabric.util
+          .getOrthonormalVector(v)
+          .scalarMultiply(strokeWidth / 2);
+        outline.unshift(p.subtract(n));
+        outline.push(p.add(n));
+      });
+    const path = new Path2D();
+    this.buildPath(path, outline);
+    return path;
+  }
+
   /**
    * @override erase
    */
   _render(ctx: CanvasRenderingContext2D = this.canvas.getTopContext()): void {
+    const { width, height } = this.canvas;
+    const dpr = window.devicePixelRatio;
+    this.canvas.clearContext(ctx);
     super._render(ctx);
-    erase(this.canvas.getContext(), ctx, this.effectContext);
+    ctx.globalCompositeOperation = 'source-in';
+    const args = [0, 0, width * dpr, height * dpr, 0, 0, width, height];
+    ctx.drawImage(this.effectContext.canvas, ...args);
+    ctx.globalCompositeOperation = 'source-over';
+
+    const base = this.canvas.getContext();
+    base.save();
+    this._setBrushStyles(base);
+    this.canvas.clearContext(base);
+    base.drawImage(this.mip, ...args);
+    base.globalCompositeOperation = 'destination-out';
+    super._render(base);
+    base.globalCompositeOperation = 'source-over';
+    base.drawImage(ctx.canvas, ...args);
+    this.canvas.clearContext(ctx);
+    base.restore();
+    // erase(this.canvas.getContext(), ctx, this.effectContext);
   }
 
   /**
