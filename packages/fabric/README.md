@@ -61,6 +61,8 @@ canvas.freeDrawingBrush = eraser;
 canvas.isDrawingMode = true;
 ```
 
+Refer to the [example app](../app/pages/index.tsx) for in depth usage.
+
 ## Sponsors
 
 <table>
