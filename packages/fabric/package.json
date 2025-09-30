@@ -38,14 +38,14 @@
     "@erase2d/core": "file:../core",
     "@rollup/plugin-node-resolve": "^15.2.3"
   },
-  "module": "./dist/fabric/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/fabric/index.js",
+      "import": "./dist/index.js",
       "require": null,
-      "default": "./dist/fabric/index.js"
+      "default": "./dist/index.js"
     }
   }
 }
