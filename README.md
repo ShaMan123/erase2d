@@ -48,15 +48,15 @@ npm -w @erase2d/fabric publish
       </a>
     </td>
     <td>
-      <b>RemBG Remove Background API</b>
+      <b>RemBG Background Remover API</b>
       <br />
       <a
-        href="https://rembg.com/?utm_source=erase2d&utm_medium=github_readme&utm_campaign=sponsorship"
-        >https://rembg.com</a
+        href="https://www.rembg.com/?utm_source=erase2d&utm_medium=github_readme&utm_campaign=sponsorship"
+        >https://www.rembg.com</a
       >
       <br />
       <p width="200px">
-        Accurate and affordable background remover API
+        Accurate and affordable background remover API - from 1,90$ per mo
         <br />
       </p>
     </td>
