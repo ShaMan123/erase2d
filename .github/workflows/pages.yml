@@ -52,7 +52,7 @@ jobs:
         if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './packages/app/out'
+          path: './packages/app/dist'
 
   deploy:
     if: github.event_name == 'push'
