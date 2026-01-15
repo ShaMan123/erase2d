@@ -14,7 +14,7 @@ Start the [app](./packages/app/README.md)
 ```bash
 npm run build -w @erase2d/core -- -w
 npm run build -w @erase2d/fabric -- -w
-npm start
+npm run dev
 ```
 
 [Add workspace](https://docs.npmjs.com/cli/v10/using-npm/workspaces)
