@@ -46,7 +46,7 @@ jobs:
           npm ci --workspaces --include-workspace-root
           # fix npm bug
           npm i @rollup/rollup-linux-x64-gnu
-          export BASE_PATH=/erase2d && npm run build -w @erase2d/app
+          npm run build -w @erase2d/app
 
       - name: Upload artifact
         if: github.event_name == 'push'
