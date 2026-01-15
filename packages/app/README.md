@@ -6,7 +6,7 @@ A lean next app for testing and bug reporting.
 
 Provide a **detailed description** including steps to reproduce in the [`REPRODUCE.md`](./REPRODUCE.md) file.
 
-Navigate to [`pages`](./pages/index.tsx) and start editing.
+Navigate to [`src`](./src/index.tsx) and start editing.
 
 ## Dev
 

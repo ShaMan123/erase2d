@@ -24,10 +24,22 @@ object.clipPath instanceof ClippingGroup
   : delete object.clipPath;
 ```
 
+### Type Caveat
+
+The `erasable` property is added by this module.
+In case typescript fails to augment fabric, update your `tsconfig.ts`:
+
+```json
+  ...
+  "compilerOptions": {
+    "types": ["node_modules/@erase2d/fabric/types"]
+  }
+```
+
 ## Quick Start
 
 ```bash
-npm i fabric@beta @erase2d/fabric --save
+npm i fabric @erase2d/fabric --save
 ```
 
 ```typescript

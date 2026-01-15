@@ -1,16 +1,12 @@
 import { EraserBrush } from '@erase2d/fabric';
 import * as fabric from 'fabric';
-import { NextPage } from 'next';
 import { useCallback, useEffect, useRef } from 'react';
 import { Canvas } from '../src/Canvas';
-import { Tool } from '../src/tool';
 import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
+import { useStore } from './Store';
 
-const FabricPage: NextPage<{
-  tool: Tool;
-  removeFullyErased: boolean;
-  setActiveObject: (object?: fabric.FabricObject) => void;
-}> = ({ tool, removeFullyErased, setActiveObject }) => {
+export default function FabricPage() {
+  const { tool, removeFullyErased, setActiveObject } = useStore();
   const ref = useRef<fabric.Canvas>(null);
   const isTransparent = useIsTransparentWorker();
 
@@ -211,6 +207,4 @@ const FabricPage: NextPage<{
   }, [ref, tool]);
 
   return <Canvas ref={ref} onLoad={onLoad} />;
-};
-
-export default FabricPage;
+}

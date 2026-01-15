@@ -18,3 +18,5 @@ declare module 'fabric' {
 
   interface FabricObject extends FabricObjectProps {}
 }
+
+export {};

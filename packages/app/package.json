@@ -2,29 +2,31 @@
   "name": "@erase2d/app",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon",
-    "build": "next build",
-    "start": "serve out",
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview",
     "type-check": "tsc"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@erase2d/fabric": "file:../fabric",
-    "bootstrap": "^5.2.3",
-    "bootstrap-icons": "^1.11.3",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
+    "bootstrap": "^5.3.8",
     "fabric": "^6.0.0-rc2",
-    "next": "^13.4.10",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.7.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "@types/node": "^12.7.8",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "nodemon": "^3.1.0",
-    "serve": "^14.2.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^4.7.4"
+    "@types/node": "^25.0.9",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "serve": "^14.2.5",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "license": "MIT",
   "description": "erase2d app",

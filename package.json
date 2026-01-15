@@ -17,7 +17,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run prepublish --workspaces --if-present",
-    "start": "npm run dev -w @erase2d/app"
+    "dev": "npm run dev -w @erase2d/app"
   },
   "keywords": [
     "erase",
