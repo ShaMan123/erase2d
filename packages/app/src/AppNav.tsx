@@ -21,6 +21,8 @@ export default function AppNav() {
     setRemoveFullyErased,
     activeObject,
     erasable,
+    erasableBackground,
+    toggleErasableBackground,
     toggleErasable,
   } = useStore();
 
@@ -60,7 +62,6 @@ export default function AppNav() {
           label={<Typography variant="caption">Action</Typography>}
           labelPlacement="bottom"
         />
-
         <FormControlLabel
           control={
             <Switch
@@ -75,7 +76,16 @@ export default function AppNav() {
           }
           labelPlacement="bottom"
         />
-
+        <FormControlLabel
+          control={
+            <Switch
+              checked={!!erasableBackground}
+              onChange={(e) => toggleErasableBackground(e.target.checked)}
+            />
+          }
+          label={<Typography variant="caption">Erasable background</Typography>}
+          labelPlacement="bottom"
+        />
         {activeObject && (
           <FormControlLabel
             control={
@@ -84,7 +94,7 @@ export default function AppNav() {
                 value={erasable}
                 onChange={(e, value) =>
                   toggleErasable(
-                    value === 'deep' ? value : Boolean(Number(value))
+                    value === 'deep' ? value : Boolean(Number(value)),
                   )
                 }
                 exclusive
