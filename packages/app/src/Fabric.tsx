@@ -1,13 +1,12 @@
 import { EraserBrush } from '@erase2d/fabric';
 import * as fabric from 'fabric';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Canvas } from '../src/Canvas';
 import { useIsTransparentWorker } from '../src/useIsTransparentWorker';
 import { useStore } from './Store';
 
 export default function FabricPage() {
-  const { tool, removeFullyErased, setActiveObject } = useStore();
-  const ref = useRef<fabric.Canvas>(null);
+  const { canvas: ref, tool, removeFullyErased, setActiveObject } = useStore();
   const isTransparent = useIsTransparentWorker();
 
   const onLoad = useCallback(
@@ -109,9 +108,13 @@ export default function FabricPage() {
               originX: 'center',
               originY: 'center',
             }),
-          }
+          },
         ),
       ];
+
+      const img = document.createElement('img');
+      img.src = 'https://cdn.viva.org.uk/wp-content/uploads/2020/08/Horses.jpg';
+      canvas.backgroundImage = new fabric.FabricImage(img, { erasable: false });
 
       canvas.add(
         rect,
@@ -124,7 +127,7 @@ export default function FabricPage() {
               }),
             ]
           : objects),
-        circle
+        circle,
       );
 
       const animate = (toState: number) => {
@@ -137,12 +140,12 @@ export default function FabricPage() {
             easing: toState
               ? fabric.util.ease.easeInOutQuad
               : fabric.util.ease.easeInOutSine,
-          }
+          },
         );
       };
       animate(1);
     },
-    [ref]
+    [ref],
   );
 
   useEffect(() => {
@@ -159,7 +162,7 @@ export default function FabricPage() {
     canvas.isDrawingMode = tool !== 'select';
     return canvas.on(
       'path:created',
-      ({ path }) => tool === 'draw' && (path.erasable = true)
+      ({ path }) => tool === 'draw' && (path.erasable = true),
     );
   }, [ref, tool]);
 
@@ -180,8 +183,8 @@ export default function FabricPage() {
       console.log(res);
       const transparent = await Promise.all(
         e.detail.targets.map(
-          async (target) => [target, await isTransparent(target)] as const
-        )
+          async (target) => [target, await isTransparent(target)] as const,
+        ),
       );
       const fullyErased = transparent
         .filter(([, transparent]) => transparent)
@@ -201,7 +204,7 @@ export default function FabricPage() {
     const disposers = (
       ['selection:created', 'selection:updated', 'selection:cleared'] as const
     ).map((ev) =>
-      canvas.on(ev, () => setActiveObject(canvas.getActiveObject()))
+      canvas.on(ev, () => setActiveObject(canvas.getActiveObject())),
     );
     return () => disposers.forEach((d) => d());
   }, [ref, tool]);

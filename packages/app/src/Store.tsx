@@ -1,14 +1,16 @@
-import type { FabricObject } from 'fabric';
+import { Canvas, type FabricObject } from 'fabric';
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import type { Tool } from '../src/tool';
 
 export function useStoreData() {
+  const canvas = useRef<Canvas | null>(null);
   const [tool, setTool] = useState<Tool>('erase');
   const [removeFullyErased, setRemoveFullyErased] = useState(true);
   const [activeObject, setActiveObject] = useState<FabricObject>();
@@ -25,10 +27,25 @@ export function useStoreData() {
       setErasable(erasable);
       tool !== 'erase' && tool !== 'undo' && setTool('erase');
     },
-    [activeObject, setErasable, tool]
+    [activeObject, setErasable, tool],
+  );
+  const [erasableBackground, setErasableBackground] = useState<
+    boolean | 'deep' | undefined
+  >();
+  const toggleErasableBackground = useCallback(
+    (erasable: boolean | 'deep') => {
+      const bg = canvas.current?.backgroundImage;
+      if (!bg) {
+        return;
+      }
+      bg.erasable = erasable;
+      setErasableBackground(erasable);
+    },
+    [setErasable, tool],
   );
 
   return {
+    canvas,
     tool,
     setTool,
     removeFullyErased,
@@ -36,6 +53,8 @@ export function useStoreData() {
     activeObject,
     setActiveObject,
     erasable,
+    erasableBackground,
+    toggleErasableBackground,
     toggleErasable,
   };
 }
