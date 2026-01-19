@@ -38,6 +38,9 @@
     "@erase2d/core": "file:../core",
     "@rollup/plugin-node-resolve": "^15.2.3"
   },
+  "files": [
+    "/dist"
+  ],
   "module": "./dist/fabric/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

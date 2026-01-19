@@ -10,4 +10,3 @@ test*
 e2e/
 .DS_Store
 .devcontainer/
-src/
