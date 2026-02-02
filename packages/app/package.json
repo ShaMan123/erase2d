@@ -14,7 +14,7 @@
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
     "bootstrap": "^5.3.8",
-    "fabric": "^6.0.0-rc2",
+    "fabric": "^7.1.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
