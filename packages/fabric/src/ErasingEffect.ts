@@ -16,7 +16,7 @@ function walk(objects: FabricObject[]): FabricObject[] {
 function drawCanvas(
   ctx: CanvasRenderingContext2D,
   canvas: Canvas,
-  objects: FabricObject[]
+  objects: FabricObject[],
 ) {
   canvas.clearContext(ctx);
 
@@ -38,6 +38,7 @@ function drawCanvas(
     clipPath._set('canvas', canvas);
     clipPath.shouldCache();
     clipPath._transformDone = true;
+    // @ts-expect-error fabric type crap
     clipPath.renderCache({ forClipping: true });
     canvas.drawClipPathOnCanvas(ctx, clipPath as any);
   }
@@ -74,7 +75,7 @@ export function draw(
     objects?: FabricObject[];
     background?: FabricObject;
     overlay?: FabricObject;
-  }
+  },
 ) {
   // prepare tree
   const alpha = 1 - opacity;

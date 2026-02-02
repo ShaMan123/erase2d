@@ -15,6 +15,9 @@ export default function FabricPage() {
         width: window.innerWidth,
         height: window.innerHeight,
       });
+      canvas.setViewportTransform(
+        fabric.util.createTranslateMatrix(canvas.width / 2, canvas.height / 2),
+      );
 
       const eraser = (canvas.freeDrawingBrush = new EraserBrush(canvas));
       eraser.width = 30;
@@ -25,7 +28,12 @@ export default function FabricPage() {
         height: 200,
         fill: 'blue',
         erasable: true,
-        clipPath: new fabric.Circle({ radius: 50, inverted: true }),
+        clipPath: new fabric.Circle({
+          left: -150,
+          top: -50,
+          radius: 50,
+          inverted: true,
+        }),
       });
       const circle = new fabric.Circle({
         radius: 50,
@@ -92,8 +100,6 @@ export default function FabricPage() {
                 radius: 50,
                 left: -25,
                 top: -25,
-                originX: 'center',
-                originY: 'center',
               }),
             }),
           ],
@@ -105,8 +111,6 @@ export default function FabricPage() {
               radius: 50,
               left: 25,
               top: 25,
-              originX: 'center',
-              originY: 'center',
             }),
           },
         ),
@@ -134,7 +138,10 @@ export default function FabricPage() {
         rect.animate(
           { scaleX: Math.max(toState, 0.1) * 2 },
           {
-            onChange: () => canvas.renderAll(),
+            onChange: () => {
+              rect.setCoords();
+              canvas.renderAll();
+            },
             onComplete: () => animate(Number(!toState)),
             duration: 1000,
             easing: toState
