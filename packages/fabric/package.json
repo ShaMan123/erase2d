@@ -1,6 +1,6 @@
 {
   "name": "@erase2d/fabric",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Fabric.js erase2d bindings",
   "type": "module",
   "scripts": {
