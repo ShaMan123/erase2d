@@ -1,4 +1,4 @@
-import { erase } from '@erase2d/core';
+import { erase, type Region } from '@erase2d/core';
 import * as fabric from 'fabric';
 import { FabricObject, Group, Path } from 'fabric';
 import { ClippingGroup } from './ClippingGroup';
@@ -185,6 +185,10 @@ export class EraserBrush extends fabric.PencilBrush {
   private eventEmitter: EventTarget;
   private active = false;
   private _disposer?: VoidFunction;
+  /**
+   * number of points drawn by the last render, see {@link _getDirtyRegion}
+   */
+  private _renderedPoints = 0;
 
   constructor(canvas: fabric.Canvas) {
     super(canvas);
@@ -240,10 +244,104 @@ export class EraserBrush extends fabric.PencilBrush {
 
   /**
    * @override erase
+   *
+   * Composites the entire canvas.
+   * Pointer moves render through {@link _renderMove} instead.
    */
   _render(ctx: CanvasRenderingContext2D = this.canvas.getTopContext()): void {
     super._render(ctx);
     erase(this.canvas.getContext(), ctx, this.effectContext);
+    this._renderedPoints = this['_points'].length;
+  }
+
+  /**
+   * The pixel bounds of the part of the path that changed since the last render.
+   * The path is smoothed through the midpoints of its points,
+   * so adding a point changes the curve from the 2 points before the last rendered one.
+   * @returns `undefined` when the entire canvas has to be composited:
+   * a straight line moves its end point instead of adding one, and a shadow is drawn outside of the stroke.
+   */
+  private _getDirtyRegion(): Region | undefined {
+    if (this['_hasStraightLine'] || this.shadow) {
+      return;
+    }
+    const points: fabric.Point[] = this['_points'];
+    const from = Math.max(0, this._renderedPoints - 3);
+    if (from === 0 || points.length - from < 2) {
+      return;
+    }
+    const { canvas } = this;
+    const el = canvas.getTopContext().canvas;
+    const scale = canvas.getRetinaScaling();
+    const t = fabric.util.multiplyTransformMatrices(
+      [scale, 0, 0, scale, 0, 0],
+      canvas.viewportTransform
+    );
+    // how far the stroke extends from its points: square caps reach the corners, miter joins up to the miter limit
+    const extent = Math.max(
+      this.strokeLineCap === 'square' ? Math.SQRT2 : 1,
+      this.strokeLineJoin === 'miter' ? this.strokeMiterLimit : 1
+    );
+    // in pixels, with a margin for antialiasing
+    const pad =
+      (this.width / 2) *
+        extent *
+        Math.max(Math.hypot(t[0], t[1]), Math.hypot(t[2], t[3])) +
+      2;
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
+    for (let i = from; i < points.length; i++) {
+      const { x, y } = fabric.util.transformPoint(points[i], t);
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
+    const x = Math.max(0, Math.floor(minX - pad));
+    const y = Math.max(0, Math.floor(minY - pad));
+    const width = Math.min(el.width, Math.ceil(maxX + pad)) - x;
+    const height = Math.min(el.height, Math.ceil(maxY + pad)) - y;
+    if (width <= 0 || height <= 0) {
+      return;
+    }
+    return { x, y, width, height };
+  }
+
+  /**
+   * Renders only {@link region}: the rest of the top context already holds the effect of the previous render
+   * and the rest of the main context is already erased by it.
+   */
+  private _renderRegion(region: Region) {
+    const ctx = this.canvas.getTopContext();
+    ctx.save();
+    const transform = ctx.getTransform();
+    ctx.resetTransform();
+    ctx.beginPath();
+    ctx.rect(region.x, region.y, region.width, region.height);
+    ctx.clip();
+    ctx.clearRect(region.x, region.y, region.width, region.height);
+    ctx.setTransform(transform);
+    // the full path is stroked but only the region is rasterized
+    fabric.PencilBrush.prototype._render.call(this, ctx);
+    ctx.restore();
+    erase(this.canvas.getContext(), ctx, this.effectContext, region);
+    this._renderedPoints = this['_points'].length;
+  }
+
+  /**
+   * Renders the point added by a pointer move:
+   * only the part of the path that changed if possible, see {@link _getDirtyRegion}, the entire canvas otherwise.
+   */
+  private _renderMove() {
+    const region = this._getDirtyRegion();
+    if (region) {
+      this._renderRegion(region);
+      return;
+    }
+    this.canvas.clearContext(this.canvas.contextTop);
+    this._render();
   }
 
   /**
@@ -288,17 +386,33 @@ export class EraserBrush extends fabric.PencilBrush {
   }
 
   /**
-   * @override run if active
+   * @override run if active.
+   * Same as {@link fabric.PencilBrush#onMouseMove} except that it does not clear the entire top context,
+   * since {@link _renderMove} may redraw only the part of it that changed.
    */
   onMouseMove(
     pointer: fabric.Point,
     context: fabric.TEvent<fabric.TPointerEvent>
   ): void {
-    this.active &&
-      this.eventEmitter.dispatchEvent(
+    if (
+      !this.active ||
+      !this.eventEmitter.dispatchEvent(
         new CustomEvent('move', { detail: context, cancelable: true })
-      ) &&
-      super.onMouseMove(pointer, context);
+      )
+    ) {
+      return;
+    }
+    const { e } = context;
+    if (!this.canvas._isMainEvent(e)) {
+      return;
+    }
+    this.drawStraightLine = !!this.straightLineKey && e[this.straightLineKey];
+    if (this.limitedToCanvasSize === true && this._isOutSideCanvas(pointer)) {
+      return;
+    }
+    if (this._addPoint(pointer) && this['_points'].length > 1) {
+      this._renderMove();
+    }
   }
 
   /**
