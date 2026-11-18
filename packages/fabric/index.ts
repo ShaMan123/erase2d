@@ -1,11 +1,11 @@
 /// <reference path="./types/fabric.d.ts" />
 
-export { ClippingGroup } from './src/ClippingGroup';
+export { ClippingGroup } from './src/ClippingGroup.js';
 export {
   eraseCanvasDrawable,
   eraseObject,
   EraserBrush,
   type ErasingEvent,
   type ErasingEventType,
-} from './src/EraserBrush';
-export { isTransparent } from './src/isTransparent';
+} from './src/EraserBrush.js';
+export { isTransparent } from './src/isTransparent.js';

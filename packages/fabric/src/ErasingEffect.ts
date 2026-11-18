@@ -1,5 +1,5 @@
 import { Canvas, FabricObject, Group } from 'fabric';
-import { ClippingGroup } from './ClippingGroup';
+import { ClippingGroup } from './ClippingGroup.js';
 
 function walk(objects: FabricObject[]): FabricObject[] {
   return objects.flatMap((object) => {
