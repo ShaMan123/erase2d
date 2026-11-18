@@ -28,6 +28,7 @@ npm init -w ./packages/a
 ```bash
 npm run prepublish
 npm -w @erase2d/fabric version <type>
+git commit -m "bump fabric package"
 npm -w @erase2d/fabric publish
 ```
 
