@@ -1,8 +1,8 @@
 import { erase, type Region } from '@erase2d/core';
 import * as fabric from 'fabric';
 import { FabricObject, Group, Path } from 'fabric';
-import { ClippingGroup } from './ClippingGroup';
-import { draw } from './ErasingEffect';
+import { ClippingGroup } from './ClippingGroup.js';
+import { draw } from './ErasingEffect.js';
 
 export type EventDetailMap = {
   start: fabric.TEvent<fabric.TPointerEvent>;

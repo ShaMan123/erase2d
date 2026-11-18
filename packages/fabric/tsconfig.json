@@ -3,6 +3,8 @@
   "include": ["index.ts"],
   "compilerOptions": {
     "outDir": "./dist",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "types": ["./types"]
   }
 }

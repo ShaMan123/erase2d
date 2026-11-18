@@ -1,1 +1,1 @@
-export * from './src/erase';
+export * from './src/erase.js';
